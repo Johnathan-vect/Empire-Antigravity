@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="frg-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#141416" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#141416" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="frg-hex-rim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f2cea0" />
+      <stop offset="22%" stop-color="#696b73" />
+      <stop offset="65%" stop-color="#2c2d32" />
+      <stop offset="100%" stop-color="#141518" />
+    </linearGradient>
+    <linearGradient id="frg-iron-body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#484950" />
+      <stop offset="50%" stop-color="#252529" />
+      <stop offset="100%" stop-color="#151518" />
+    </linearGradient>
+    <linearGradient id="frg-copper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffbe94" />
+      <stop offset="50%" stop-color="#e07b52" />
+      <stop offset="100%" stop-color="#a84723" />
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" fill="#FFFFFF" />
+  <ellipse cx="128" cy="240" rx="64" ry="7" fill="url(#frg-shadow)" />
+
+  <!-- Outer Cast-Iron Hexagon -->
+  <polygon points="128,14 226,70 226,186 128,242 30,186 30,70" fill="url(#frg-hex-rim)" />
+  <polygon points="128,20 220,73 220,183 128,236 36,183 36,73" fill="url(#frg-iron-body)" />
+
+  <!-- Inner Gear Teeth Ring -->
+  <circle cx="128" cy="128" r="76" fill="none" stroke="#575961" stroke-width="16" stroke-dasharray="15 14.8" />
+  <circle cx="128" cy="128" r="74" fill="none" stroke="#2c2d33" stroke-width="14" stroke-dasharray="15 14.8" />
+  <circle cx="128" cy="128" r="68" fill="#1e1f23" stroke="#50525a" stroke-width="3" />
+
+  <!-- White Inner Cutout Circle -->
+  <circle cx="128" cy="128" r="58" fill="#FFFFFF" />
+
+  <!-- Upper-Right Hammer/Bridge Arm -->
+  <path d="M156,88 L194,68 L208,96 L168,110 Z" fill="url(#frg-iron-body)" stroke="#686a73" stroke-width="1.5" />
+
+  <!-- Glowing Copper-Orange Spark Wedge Above Anvil -->
+  <path d="M116,108 L156,90 C162,95 166,101 167,108 Z" fill="url(#frg-copper)" stroke="#ffdfb8" stroke-width="1" />
+
+  <!-- Heavy Cast-Iron Anvil Silhouette in Center -->
+  <!-- Anvil Horn (Left) -->
+  <path d="M70,117 L106,117 L106,138 C90,138 76,130 70,117 Z" fill="url(#frg-iron-body)" stroke="#63656e" stroke-width="1.2" />
+  <!-- Anvil Main Body & Base -->
+  <path d="M106,113 L182,113 L182,122 C164,126 152,135 152,148 C152,156 158,162 166,166 L166,175 L146,175 L138,165 L126,165 L118,175 L100,175 L100,166 C108,162 112,155 112,146 L106,142 Z" fill="url(#frg-iron-body)" stroke="#757780" stroke-width="1.5" />
+</svg>

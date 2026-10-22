@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="ktc-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2a241e" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#2a241e" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="ktc-coral-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f58d6e" />
+      <stop offset="45%" stop-color="#df6d50" />
+      <stop offset="100%" stop-color="#c4563b" />
+    </linearGradient>
+    <linearGradient id="ktc-coral-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fa9e80" />
+      <stop offset="30%" stop-color="#e06f52" />
+      <stop offset="100%" stop-color="#c95b40" />
+    </linearGradient>
+    <linearGradient id="ktc-coral-bot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e37255" />
+      <stop offset="100%" stop-color="#c7583d" />
+    </linearGradient>
+    <linearGradient id="ktc-cream" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbfaf7" />
+      <stop offset="100%" stop-color="#e5e2d9" />
+    </linearGradient>
+    <linearGradient id="ktc-sage-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9cb8a5" />
+      <stop offset="100%" stop-color="#7c9885" />
+    </linearGradient>
+    <linearGradient id="ktc-sage-bot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#88a692" />
+      <stop offset="100%" stop-color="#5e7967" />
+    </linearGradient>
+    <linearGradient id="ktc-kraft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d2b48c" />
+      <stop offset="100%" stop-color="#a88760" />
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" fill="#FFFFFF" />
+  <ellipse cx="142" cy="222" rx="68" ry="7" fill="url(#ktc-shadow)" />
+
+  <!-- Kraft cardboard inner structural folds -->
+  <polygon points="88,180 128,128 128,216 90,212" fill="url(#ktc-kraft)" />
+  <polygon points="90,212 128,188 128,216" fill="#9c7a54" />
+  <polygon points="128,128 182,42 188,44 134,128" fill="url(#ktc-kraft)" />
+
+  <!-- Left Diamond Wing (Coral Left + Cream Right) -->
+  <path d="M44,128 L84,82 Q88,78 88,85 L88,171 Q88,178 84,174 Z" fill="url(#ktc-coral-left)" />
+  <path d="M88,84 L126,125 Q129,128 126,131 L88,172 Z" fill="url(#ktc-cream)" />
+
+  <!-- Lower-Left Sage Green Fold -->
+  <polygon points="82,175 126,131 116,194" fill="url(#ktc-sage-bot)" />
+
+  <!-- Upper Main Ascending Coral Triangle -->
+  <path d="M78,80 L176,41 Q182,39 179,45 L128,126 Q126,128 123,125 L77,84 Q74,82 78,80 Z" fill="url(#ktc-coral-top)" />
+
+  <!-- Upper-Right Cream Triangle & Inner Sage Triangle -->
+  <path d="M184,43 L179,124 Q179,128 175,125 L154,99 Z" fill="url(#ktc-cream)" />
+  <path d="M153,99 L176,127 L129,127 Z" fill="url(#ktc-sage-top)" />
+
+  <!-- Bottom-Right Split Block (Cream Upper-Left + Coral Lower-Right) -->
+  <path d="M129,129 L177,129 L129,214 Z" fill="url(#ktc-cream)" />
+  <path d="M179,129 L196,208 Q197,214 191,214 L131,215 Z" fill="url(#ktc-coral-bot)" />
+
+  <!-- Subtle Fold Highlights -->
+  <line x1="88" y1="82" x2="88" y2="174" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.55" />
+  <line x1="78" y1="80" x2="178" y2="41" stroke="#ffd2be" stroke-width="2" stroke-opacity="0.7" />
+</svg>

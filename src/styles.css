@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-bg: var(--empire-bg);
+  --color-surface: var(--empire-surface);
+  --color-raised: var(--empire-raised);
+  --color-fg: var(--empire-fg);
+  --color-muted: var(--empire-muted);
+  --color-faint: var(--empire-faint);
+  --color-border: var(--empire-border);
+  --color-accent: var(--empire-accent);
+  --color-accent-fg: var(--empire-accent-fg);
+  --color-gain: var(--empire-gain);
+  --color-loss: var(--empire-loss);
+  --color-warn: var(--empire-warn);
+  --color-ring: var(--empire-ring);
+  --color-scrim: var(--empire-scrim);
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+
+  --shadow-border: var(--empire-shadow);
+}
+
+:root,
+[data-theme="dark"] {
+  --empire-bg: #09090b;
+  --empire-surface: #121214;
+  --empire-raised: #1a1a1e;
+  --empire-fg: #f4f4f0;
+  --empire-muted: #9a9a92;
+  --empire-faint: #6e6e68;
+  --empire-border: color-mix(in oklab, #f4f4f0 12%, transparent);
+  --empire-accent: #d4d6dc;
+  --empire-accent-fg: #09090b;
+  --empire-gain: #4f9d6e;
+  --empire-loss: #c45c5c;
+  --empire-warn: #c4a35a;
+  --empire-ring: color-mix(in oklab, #d4d6dc 55%, transparent);
+  --empire-scrim: color-mix(in oklab, #09090b 84%, transparent);
+  --empire-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --empire-bg: #f4f3ee;
+  --empire-surface: #fffcf7;
+  --empire-raised: #eceae4;
+  --empire-fg: #161614;
+  --empire-muted: #6a6a64;
+  --empire-faint: #8a8a84;
+  --empire-border: color-mix(in oklab, #161614 12%, transparent);
+  --empire-accent: #1c1d21;
+  --empire-accent-fg: #f4f3ee;
+  --empire-gain: #2f7a4e;
+  --empire-loss: #b44545;
+  --empire-warn: #9a7a32;
+  --empire-ring: color-mix(in oklab, #1c1d21 35%, transparent);
+  --empire-scrim: color-mix(in oklab, #f4f3ee 84%, transparent);
+  --empire-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06),
+    0 2px 4px 0 rgba(0, 0, 0, 0.04);
+}
+
+@layer base {
+  * {
+    border-color: var(--empire-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    background: var(--empire-bg);
+    color: var(--empire-fg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  input,
+  button,
+  select,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .empire-scrim {
+    background-color: var(--empire-scrim);
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Guarantee notifications always appear at the top edge of the user's current viewport */
+[data-sonner-toaster] {
+  position: fixed !important;
+  top: max(12px, env(safe-area-inset-top, 12px)) !important;
+  bottom: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 9999 !important;
+  pointer-events: none;
+}
+
+[data-sonner-toast] {
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

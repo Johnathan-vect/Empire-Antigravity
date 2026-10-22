@@ -1,0 +1,31 @@
+node_modules
+dist
+.output
+.vercel
+.tanstack
+.nitro
+.wrangler
+.cache
+*.local
+.env
+.env.*
+!.env.example
+
+# sandbox / QA
+.grok
+artifacts
+screenshots
+attachments
+.node_modules.lock
+/tmp
+*.log
+AGENTS.md
+test-results
+*.mp4
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.swp

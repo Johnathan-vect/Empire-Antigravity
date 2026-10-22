@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="nsb-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#162032" stop-opacity="0.28" />
+      <stop offset="100%" stop-color="#162032" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="nsb-ring-outer" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eef0f4" />
+      <stop offset="45%" stop-color="#b8bec9" />
+      <stop offset="100%" stop-color="#68707d" />
+    </linearGradient>
+    <linearGradient id="nsb-ring-inner" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#d4d6dc" />
+      <stop offset="55%" stop-color="#7c8492" />
+      <stop offset="100%" stop-color="#444b57" />
+    </linearGradient>
+    <linearGradient id="nsb-plat-light" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="50%" stop-color="#e3e6ec" />
+      <stop offset="100%" stop-color="#c2c7d1" />
+    </linearGradient>
+    <linearGradient id="nsb-plat-mid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d8dce4" />
+      <stop offset="100%" stop-color="#9aa2b0" />
+    </linearGradient>
+    <linearGradient id="nsb-plat-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#aeb5c2" />
+      <stop offset="100%" stop-color="#6e7785" />
+    </linearGradient>
+    <linearGradient id="nsb-blue-light" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#324c74" />
+      <stop offset="100%" stop-color="#1b2b44" />
+    </linearGradient>
+    <linearGradient id="nsb-blue-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#19253a" />
+      <stop offset="100%" stop-color="#0b121e" />
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" fill="#FFFFFF" />
+  <ellipse cx="128" cy="232" rx="56" ry="7" fill="url(#nsb-shadow)" />
+
+  <!-- Outer architectural vault ring -->
+  <circle cx="128" cy="128" r="76" fill="none" stroke="url(#nsb-ring-outer)" stroke-width="18" />
+  <circle cx="128" cy="128" r="67" fill="none" stroke="url(#nsb-ring-inner)" stroke-width="5" />
+
+  <!-- 4 Diagonal Midnight-Blue Polar Points -->
+  <!-- Top-Left Point -->
+  <polygon points="128,128 60,60 95,112" fill="url(#nsb-blue-light)" />
+  <polygon points="128,128 60,60 112,95" fill="url(#nsb-blue-dark)" />
+  <circle cx="63" cy="63" r="4.5" fill="#294063" />
+
+  <!-- Top-Right Point -->
+  <polygon points="128,128 196,60 144,95" fill="url(#nsb-blue-light)" />
+  <polygon points="128,128 196,60 161,112" fill="url(#nsb-blue-dark)" />
+  <circle cx="193" cy="63" r="4.5" fill="#294063" />
+
+  <!-- Bottom-Left Point -->
+  <polygon points="128,128 60,196 112,161" fill="url(#nsb-blue-dark)" />
+  <polygon points="128,128 60,196 95,144" fill="url(#nsb-blue-light)" />
+  <circle cx="63" cy="193" r="4.5" fill="#162032" />
+
+  <!-- Bottom-Right Point -->
+  <polygon points="128,128 196,196 161,144" fill="url(#nsb-blue-light)" />
+  <polygon points="128,128 196,196 144,161" fill="url(#nsb-blue-dark)" />
+  <circle cx="193" cy="193" r="4.5" fill="#162032" />
+
+  <!-- 4 Main Brushed-Platinum Vault Pillars (Outer Collar Flanges) -->
+  <path d="M111,48 L128,22 L145,48 L152,104 L104,104 Z" fill="url(#nsb-plat-mid)" />
+  <path d="M111,208 L128,234 L145,208 L152,152 L104,152 Z" fill="url(#nsb-plat-dark)" />
+  <path d="M48,111 L22,128 L48,145 L104,152 L104,104 Z" fill="url(#nsb-plat-mid)" />
+  <path d="M208,111 L234,128 L208,145 L152,152 L152,104 Z" fill="url(#nsb-plat-dark)" />
+
+  <!-- Faceted Inner Cross Star (4 Interlocking Beveled Quadrants) -->
+  <!-- Top-Left Quadrant (Brightest Specular Light) -->
+  <polygon points="128,128 128,22 117,32 108,108 32,117 22,128" fill="url(#nsb-plat-light)" />
+  <polygon points="128,128 108,108 117,32 128,22" fill="#f7f9fc" />
+
+  <!-- Top-Right Quadrant -->
+  <polygon points="128,128 128,22 139,32 148,108 224,117 234,128" fill="url(#nsb-plat-mid)" />
+  <polygon points="128,128 148,108 224,117 234,128" fill="#c7cdd8" />
+
+  <!-- Bottom-Left Quadrant -->
+  <polygon points="128,128 22,128 32,139 108,148 117,224 128,234" fill="url(#nsb-plat-mid)" />
+  <polygon points="128,128 108,148 117,224 128,234" fill="#d9dde5" />
+
+  <!-- Bottom-Right Quadrant (Cool Shadow) -->
+  <polygon points="128,128 234,128 224,139 148,148 139,224 128,234" fill="url(#nsb-plat-dark)" />
+
+  <!-- Crisp Center Ridge Lines -->
+  <line x1="128" y1="22" x2="128" y2="234" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.7" />
+  <line x1="22" y1="128" x2="234" y2="128" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.6" />
+  <line x1="108" y1="108" x2="148" y2="148" stroke="#7c8492" stroke-width="1.2" stroke-opacity="0.6" />
+  <line x1="148" y1="108" x2="108" y2="148" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.6" />
+</svg>

@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-10-22T17:08:10.844Z",
+  "persona": "persona-anno-economist",
+  "status": "FAIL_BALANCE_INSUFFICIENT",
+  "findings": [
+    {
+      "industry": "imbiss",
+      "currentBuybackPrice": "180 €",
+      "typicalDailyRevenue": "650 €",
+      "penaltyRatio": "27.7 % des Tagesumsatzes",
+      "annoEvaluation": "KRITISCHER BALANCE-FEHLER: Billig-Bailout! Strafe ist viel zu gering (unter 50 % eines einzigen Tagesumsatzes). Spieler lernt keine Konsequenzen."
+    },
+    {
+      "industry": "cafe",
+      "currentBuybackPrice": "350 €",
+      "typicalDailyRevenue": "1400 €",
+      "penaltyRatio": "25.0 % des Tagesumsatzes",
+      "annoEvaluation": "KRITISCHER BALANCE-FEHLER: Billig-Bailout! Strafe ist viel zu gering (unter 50 % eines einzigen Tagesumsatzes). Spieler lernt keine Konsequenzen."
+    },
+    {
+      "industry": "shop",
+      "currentBuybackPrice": "780 €",
+      "typicalDailyRevenue": "2800 €",
+      "penaltyRatio": "27.9 % des Tagesumsatzes",
+      "annoEvaluation": "KRITISCHER BALANCE-FEHLER: Billig-Bailout! Strafe ist viel zu gering (unter 50 % eines einzigen Tagesumsatzes). Spieler lernt keine Konsequenzen."
+    }
+  ],
+  "recommendations": {
+    "ruleName": "Anno-1800-Konsequenz-Prinzip",
+    "supplierBuybackFormula": "max(typicalDailyRevenue * 1.5, baseFee * 6) + vertrauensVerlustMalus",
+    "trustPenalty": "Zurückgeholter Lieferant startet mit max. 35 % Zufriedenheit und halber Lieferkapazität für 3 Spieltage.",
+    "suggestedPrices": {
+      "imbiss": "mind. 950 € bis 1.200 €",
+      "cafe": "mind. 2.100 €",
+      "shop": "mind. 4.500 €"
+    }
+  }
+}

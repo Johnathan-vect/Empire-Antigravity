@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="hbf-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1c3028" stop-opacity="0.28" />
+      <stop offset="100%" stop-color="#1c3028" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="hbf-gold-rim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3d48b" />
+      <stop offset="50%" stop-color="#c4a35a" />
+      <stop offset="100%" stop-color="#8c6b28" />
+    </linearGradient>
+    <linearGradient id="hbf-gold-inner" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#eccb80" />
+      <stop offset="55%" stop-color="#b89346" />
+      <stop offset="100%" stop-color="#7d5e20" />
+    </linearGradient>
+    <radialGradient id="hbf-green-enamel" cx="38%" cy="32%" r="70%">
+      <stop offset="0%" stop-color="#3a6e5c" />
+      <stop offset="60%" stop-color="#2b5546" />
+      <stop offset="100%" stop-color="#1b3b30" />
+    </radialGradient>
+    <linearGradient id="hbf-cream" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbf5e6" />
+      <stop offset="100%" stop-color="#dfd2b5" />
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" fill="#FFFFFF" />
+  <ellipse cx="128" cy="222" rx="68" ry="8" fill="url(#hbf-shadow)" />
+
+  <!-- Outer Embossed Brass Seal Ring -->
+  <circle cx="128" cy="128" r="82" fill="url(#hbf-gold-rim)" />
+  <circle cx="128" cy="128" r="75" fill="url(#hbf-gold-inner)" />
+  <circle cx="128" cy="128" r="70" fill="url(#hbf-green-enamel)" />
+
+  <!-- Embossed Cream Harbor Seal Emblem (Top Half) -->
+  <path d="M90,140 C94,116 98,80 128,80 C158,80 162,116 166,140 C150,135 140,134 128,134 C116,134 106,135 90,140 Z" fill="url(#hbf-cream)" stroke="#204236" stroke-width="1.5" />
+  <!-- Seal Eyes & Brows -->
+  <ellipse cx="118" cy="94" rx="2" ry="3" transform="rotate(-25 118 94)" fill="#254a3d" />
+  <ellipse cx="138" cy="94" rx="2" ry="3" transform="rotate(25 138 94)" fill="#254a3d" />
+  <ellipse cx="111" cy="105" rx="7.5" ry="6" transform="rotate(14 111 105)" fill="#254a3d" />
+  <circle cx="109" cy="103.5" r="2.2" fill="#fbf5e6" />
+  <ellipse cx="145" cy="105" rx="7.5" ry="6" transform="rotate(-14 145 105)" fill="#254a3d" />
+  <circle cx="143" cy="103.5" r="2.2" fill="#fbf5e6" />
+  <!-- Seal Nose & Muzzle -->
+  <path d="M123,113 L133,113 L128,120 Z" fill="#254a3d" />
+  <path d="M128,118 L128,123 M128,122 C123,128 112,126 113,117 M128,122 C133,128 144,126 143,117" fill="none" stroke="#254a3d" stroke-width="3.2" stroke-linecap="round" />
+
+  <!-- Golden Wheat Ear on Anchor Shaft -->
+  <g fill="url(#hbf-gold-rim)">
+    <path d="M128,140 C131,144 131,149 128,152 C125,149 125,144 128,140 Z" />
+    <path d="M127,151 C121,149 119,144 121,141 C125,143 127,147 127,151 Z" />
+    <path d="M129,151 C135,149 137,144 135,141 C131,143 129,147 129,151 Z" />
+    <path d="M127,159 C121,157 119,152 121,149 C125,151 127,155 127,159 Z" />
+    <path d="M129,159 C135,157 137,152 135,149 C131,151 129,155 129,159 Z" />
+    <path d="M127,167 C121,165 119,160 121,157 C125,159 127,163 127,167 Z" />
+    <path d="M129,167 C135,165 137,160 135,157 C131,159 129,163 129,167 Z" />
+  </g>
+
+  <!-- Embossed Golden Ship Anchor Flukes (Bottom) -->
+  <path d="M78,146 L94,158 L87,161 C97,172 112,176 123,169 L128,172 L133,169 C144,176 159,172 169,161 L162,158 L178,146 C180,156 178,166 173,172 L169,167 C157,180 140,184 128,191 C116,184 99,180 87,167 L83,172 C78,166 76,156 78,146 Z" fill="url(#hbf-gold-rim)" stroke="#7a5b1e" stroke-width="1" />
+</svg>

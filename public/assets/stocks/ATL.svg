@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="atl-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#11151a" stop-opacity="0.38" />
+      <stop offset="100%" stop-color="#11151a" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="atl-slate-1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5d6673" />
+      <stop offset="35%" stop-color="#353d47" />
+      <stop offset="100%" stop-color="#181c22" />
+    </linearGradient>
+    <linearGradient id="atl-slate-2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2c323b" />
+      <stop offset="60%" stop-color="#1f242b" />
+      <stop offset="100%" stop-color="#454e5c" />
+    </linearGradient>
+    <linearGradient id="atl-blue-main" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#76cbe0" />
+      <stop offset="45%" stop-color="#45a1b8" />
+      <stop offset="100%" stop-color="#26687a" />
+    </linearGradient>
+    <linearGradient id="atl-blue-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ca8bf" />
+      <stop offset="100%" stop-color="#1c4f5e" />
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" fill="#FFFFFF" />
+  <ellipse cx="128" cy="230" rx="64" ry="8" fill="url(#atl-shadow)" />
+
+  <!-- Back structural sphere ribs (dark slate & deep steel blue) -->
+  <path d="M56,162 C38,112 68,54 122,42 C168,32 208,64 214,112" fill="none" stroke="url(#atl-blue-dark)" stroke-width="22" stroke-linecap="round" />
+  <path d="M74,64 C118,98 158,138 192,188" fill="none" stroke="#182028" stroke-width="22" stroke-linecap="round" />
+
+  <!-- Top-Left Steel Blue Curved Band -->
+  <path d="M36,98 C50,62 84,38 118,36" fill="none" stroke="url(#atl-blue-main)" stroke-width="20" stroke-linecap="round" />
+
+  <!-- Bottom-Right Steel Blue Curved Band with Arrow -->
+  <path d="M104,218 C154,224 204,192 218,142" fill="none" stroke="url(#atl-blue-dark)" stroke-width="22" stroke-linecap="round" />
+
+  <!-- Upper-Left Slate Grey Heavy Rib -->
+  <path d="M32,132 C42,84 96,46 154,36 C168,42 170,54 156,60 C104,74 62,106 44,148 Z" fill="url(#atl-slate-1)" />
+
+  <!-- Central Steel Blue Cargo Arrow Band (Diagonal Bottom-Left to Top-Right) -->
+  <path d="M138,108 C166,86 190,72 212,68 C222,76 224,90 214,98 C192,106 168,122 146,140 Z" fill="url(#atl-blue-main)" />
+  <path d="M40,182 C64,154 96,128 132,108 L142,96 L154,102 C152,118 148,136 142,148 L134,138 C102,156 74,178 54,200 Z" fill="url(#atl-blue-main)" />
+
+  <!-- Prominent 3D Cargo Arrowhead in Center -->
+  <path d="M112,100 L152,102 Q158,103 156,109 L146,148 Q144,154 139,149 L131,138 L60,192 C48,184 44,172 48,162 L118,112 L110,104 Q107,100 112,100 Z" fill="url(#atl-blue-main)" stroke="#8ee0f2" stroke-width="1.5" />
+
+  <!-- Lower-Right Slate Grey Heavy Interlocking Band -->
+  <path d="M62,204 C112,216 178,176 218,108 C228,118 228,134 220,146 C180,204 118,232 76,220 C64,216 58,210 62,204 Z" fill="url(#atl-slate-2)" />
+
+  <!-- Specular Rim Highlights -->
+  <path d="M36,124 C50,82 98,50 150,40" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.45" stroke-linecap="round" />
+  <path d="M74,212 C122,220 180,184 216,122" fill="none" stroke="#8592a3" stroke-width="2" stroke-opacity="0.45" stroke-linecap="round" />
+</svg>

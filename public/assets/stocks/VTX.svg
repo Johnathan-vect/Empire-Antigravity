@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="vtx-glass-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e3c4ff" />
+      <stop offset="45%" stop-color="#b47ef5" />
+      <stop offset="100%" stop-color="#7645c4" />
+    </linearGradient>
+    <linearGradient id="vtx-glass-right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dcbaff" />
+      <stop offset="55%" stop-color="#9b72cf" />
+      <stop offset="100%" stop-color="#4c6ce0" />
+    </linearGradient>
+    <linearGradient id="vtx-glass-bot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b685f7" />
+      <stop offset="55%" stop-color="#7c5ce6" />
+      <stop offset="100%" stop-color="#3c5bd4" />
+    </linearGradient>
+    <linearGradient id="vtx-carbon-light" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6e7078" />
+      <stop offset="50%" stop-color="#3b3d45" />
+      <stop offset="100%" stop-color="#22242a" />
+    </linearGradient>
+    <linearGradient id="vtx-carbon-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#353840" />
+      <stop offset="100%" stop-color="#14161b" />
+    </linearGradient>
+  </defs>
+
+  <rect width="256" height="256" fill="#FFFFFF" />
+
+  <!-- Top-Left Translucent Violet Glass Prism Bar -->
+  <polygon points="42,38 68,38 104,104 76,98" fill="url(#vtx-glass-left)" />
+  <polygon points="30,60 42,38 76,98 48,92" fill="#9c6ade" />
+  <polygon points="48,92 76,98 104,104 50,94" fill="#d9abff" />
+
+  <!-- Left Brushed Carbon-Graphite Interlocking Segment -->
+  <polygon points="50,96 80,102 110,160 82,154" fill="url(#vtx-carbon-light)" />
+  <polygon points="80,102 104,106 128,152 110,160" fill="url(#vtx-carbon-dark)" />
+
+  <!-- Bottom Translucent Violet/Cobalt V-Vertex Prism -->
+  <polygon points="84,156 112,162 122,180 144,128 158,180 140,214 116,216" fill="url(#vtx-glass-bot)" />
+  <polygon points="84,156 116,216 144,128 122,180 112,162" fill="#a87cf0" fill-opacity="0.78" />
+  <polygon points="116,216 140,214 158,180 144,128" fill="#4f6ee8" fill-opacity="0.82" />
+
+  <!-- Right Brushed Carbon-Graphite Interlocking Segment -->
+  <polygon points="144,126 174,68 190,124 158,180" fill="url(#vtx-carbon-light)" />
+  <polygon points="158,180 190,124 174,68 178,72 192,126 160,182" fill="url(#vtx-carbon-dark)" />
+
+  <!-- Top-Right Translucent Violet/Cobalt Glass Prism Bar -->
+  <polygon points="175,66 190,38 214,38 192,122" fill="url(#vtx-glass-right)" />
+  <polygon points="214,38 226,60 192,122" fill="#6b52d9" />
+
+  <!-- Crisp Neon Specular Edge Refractions -->
+  <polyline points="42,38 76,98 104,104" fill="none" stroke="#f3dcff" stroke-width="1.8" stroke-opacity="0.85" />
+  <polyline points="116,216 144,128 158,180" fill="none" stroke="#d8b8ff" stroke-width="1.8" stroke-opacity="0.8" />
+  <polyline points="190,38 214,38 192,122" fill="none" stroke="#e9d1ff" stroke-width="1.8" stroke-opacity="0.8" />
+</svg>
