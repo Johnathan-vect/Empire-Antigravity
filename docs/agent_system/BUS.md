@@ -5,6 +5,13 @@
 
 ---
 
+## [Lazy-Mobile Grand Run: Ergonomie für das wachsende Imperium]
+1. **Krisen-Navigation:** Bei dynamischen Events (Krankheitswellen, Zinsentscheide) führt das aktuelle Menü-Setup zu massivem Frust, da man sich durch tiefe Hierarchien tippen muss.
+2. **Die 3 ergonomischen Must-Haves für das Spätspiel:**
+   - **1-Tap-Gewinnüberweisung:** Direktes Einsammeln angesammelter Cash-Überschüsse per Daumenklick aus der Sticky-Bar.
+   - **Quick-Event-Entscheidungskarten:** Pop-ups im unteren Daumenbereich (Swipe-left/right für Ja/Nein bei Krisen).
+   - **Manager-Automatisierung:** Automatisierte Routine-Wartung (Reinigung, Materialnachbestellung), damit das Imperium auch ohne Dauerklicks floriert.
+
 ## [Dynamik-Vorschlag: Bequemer Smartphone-Gamer]
 1. **Lösung für die 570px-Scrollstrecke:** Eine fixierte **Sticky Quick-Order-Leiste** am unteren Bildschirmrand kombiniert mit horizontalen **Swipe-Tabs** garantiert, dass alle Kernaktionen (Betrieb gründen, Produkt zuweisen, Kredit aufnehmen) ohne jegliches Scrollen sofort per Daumen erreichbar sind.
 2. **Dynamik & Interaktivität:** Akkordeon-Kacheln für Detailstatistiken und haptisches Feedback bei One-Tap-Interaktionen machen das Smartphone-Erlebnis extrem flüssig und nah am modernen Mobile-Gaming-Standard.
@@ -54,3 +61,34 @@ Der aktuelle Rückkaufpreis von 180 € ist ökonomisch fatal, da er mit nur ~28
   - *3-Stufen-Rehabilitation:* Nach Zahlung startet der Partner im Status „Gekränkt“ (max. 30 % Zufriedenheit, 50 % Kapazität, +15 % Risikopreis). Erst nach 3 pünktlich bezahlten Chargen steigt er zu „Vorsichtig“ (60 % Zufriedenheit, 80 % Kapazität) auf – Vertrauen muss erwirtschaftet, nicht erkauft werden.
 - **3. Flexibler Working-Capital-Puffer bei Gründung:**
   - Im Gründungsschritt 3 wählen Spieler ihr Start-Umlaufvermögen flexibel (500 € bis 3.000 €) mit dynamischer Liquiditäts-Ampel (Warnung unter 1.000 €: „Hohes Ausfallrisiko bei Erstwarenbestellung & 40-€-Reinigungsfixum“).
+
+
+## [22.10.2026 20:05] — IMPLEMENTIERUNGS-ABSCHLUSS & VERIFIKATION (SPRINT 3.2)
+- **Absender:** `empire-coordinator` (Antigravity)
+- **Empfänger:** Alle Sub-Agents / System
+- **Status:** ERFOLGREICH UMGESETZT & VERIFIZIERT
+- **Umgesetzte Beschlüsse:**
+  1. *Faire Lieferanten-Rehabilitation:* Rückkaufpreis beim Imbiss auf faire 450 € austariert (Café 1.050 €, Shop 2.600 €) mit Status „Gekränkt“ (40 % Zufriedenheit, 60 % Liefermenge).
+  2. *Startkapital-Schieberegler:* Gründungsschritt 3 besitzt nun einen flexiblen Slider (500 € – 3.000 €) mit 3-stufiger Ampel (Rot/Gelb/Grün).
+  3. *Bahnhofsmiete & Display-Bug behoben:* Imbiss-Basismiete auf 20 € gesetzt (Bahnhof ~36–40 €/Tag Miete, Kiez 0 €). Hardcodiertes `"0 € (Kiez)"` ersetzt durch dynamischen Standortnamen `{locDef.name}`.
+  4. *Mobile Daumenzone & Notification-Dots:* Gelbe Puls-Punkte an Tabs bei Handlungsbedarf sowie fixe Schnellaktions-Leiste (Reinigen/Sortiment) über der mobilen Navigationsleiste integriert.
+- **Qualitätsgate:** `npm.cmd run typecheck` = 0 Fehler, `npx.cmd vite build` = Erfolgreich, Playtest-Harness fehlerfrei durchlaufen.
+
+## [Anno-Economist Grand Run: Dynamische Makroökonomie & Krisen]
+- **Audit des 360-Tage-Runs (Scratchpad-Befund):** Der Jahresverlauf offenbart ein lineares Idle-Wachstum von 20.000 € auf 134.595 € Net-Worth und 115.637 € Firmenkasse mit einem simplen Stufe-1-Bahnhofsgrill ohne jedwede Störung. Nach Anno-1800-Grundsätzen ist eine Simulation ohne Konjunkturwellen, Zinswende oder Betriebskrisen ökonomisch tot; wirtschaftlicher Erfolg muss gegen dynamische Marktwiderstände verteidigt werden.
+- **Lösung 1: Makroökonomische Konjunkturzyklen & EZB-Schocks:**
+  - *Zinszyklen & Geldpolitik:* Dynamischer EZB-Leitzins (4 % bis 14 % p.a.), der fremdfinanzierte Expansionen in Hochzinsphasen drastisch verteuert.
+  - *Inflations- & Rohstoffkrisen:* Unvorhersehbare Kostenschocks auf Einkaufspreise (+20–40 % z. B. bei Agrar- oder Fleischknappheit) und verdoppelte Energiekosten zwingen Spieler zu Preisanpassungen oder Margenverzicht.
+- **Lösung 2: Betriebliche Krisendynamik (Krankheitswellen & Streikgefahr):**
+  - *Saisonale Krankheitswellen:* Grippewellen senken die Mitarbeiterkapazität um 40–60 %; ohne Springer-Pool oder Notdienst-Zuschläge bricht die Bedienfrequenz ein und die Hygiene stürzt ab.
+  - *Tarifkonflikte & Streikandrohungen:* Niedriglöhne bei hoher Auslastung erzeugen Unmut. Fällt die Mitarbeitermoral unter 30 %, startet ein 72-Stunden-Ultimatum: Lohnnachbesserung/Prämie zahlen oder vollständiger Betriebsausfall durch Generalstreik.
+- **Lösung 3: Dynamische Hintergrund-Ökonomie & Markt-Einfluss (Scale-Feedback):**
+  - *Endogene Marktmacht:* Mit wachsender Betriebsgröße (Ladenkette bis Konzern) schlägt das Handeln des Spielers auf den Markt zurück: Großabnahmen schalten Mengenrabatte frei (−15 %), während Konzerne Preiskämpfe gegen den Spieler entfachen.
+  - *Lohn-Preis-Spirale & Monopol-Aufsicht:* Expansive Ketten verknappen das lokale Personalangebot, wodurch marktweite Löhne steigen; bei marktbeherrschender Stellung greifen Kartellprüfungen und Wettbewerbsstrafen.
+
+## [Design-Purist Grand Run: Visuelle Klarheit & Prestige]
+- **Ästhetik-Audit des 360-Tage-Runs:** Die typografische Disziplin mit konsequentem `font-mono tabular` für Finanzwerte, subtilen Border-Schatten und ausgewogenem Whitespace sorgt für einen vorbildlich ruhigen Premium-Eindruck. Die Rich-List-Karten überzeugen durch visuell prägnante Avatar-Badges und subtile Spieler-Hervorhebung (`bg-accent/15 border-accent/40`), wirken jedoch in längeren Listen ohne visuelle Rangstufen noch etwas monoton.
+- **Harmonische Integration von Makroökonomie & Krisen:** Komplexe Makrodaten dürfen das Dashboard keinesfalls in ein unübersichtliches Terminal verwandeln, sondern müssen über eine ultra-kompakte Kopf-Statuszeile kondensiert werden. Krisen werden als flache, gestapelte Event-Banner im bestehenden Warnungs-Container gerendert, die durch strikte Einhaltung der Farbinvarianten (`warn` für Fristen/Ultimaten, `loss` für akute Schocks) sofortige Orientierung stiften, ohne nervöse Popups zu erzwingen.
+- **Konkreter Design-Vorschlag 1: Minimalistischer Makro-Ticker (Head-Bar):** Eine einzeilige, horizontale Ticker-Leiste direkt unter der Datumsanzeige mit drei kompakten Pills: EZB-Zins (z. B. `Zins: 5,5 %`), Inflation (`Inf: 2,8 %`) und Konjunkturzyklus (`Boom ↗` in `accent`). Details öffnen sich auf Klick in einem fokussierten Drawer-Sheet, wodurch das Dashboard vertikal keinen Millimeter wächst.
+- **Konkreter Design-Vorschlag 2: Krisen-Banner mit Aktions-Micro-CTA:** Streikdrohungen und Grippewellen nutzen das Design-Token `warn` (`text-warn bg-raised`) mit Countdown-Badge und integriertem Inline-Button (z. B. „Schlichten (500 €)“), während ungelöste Katastrophen erst bei Schadenseintritt zu `loss` eskalieren. Dadurch bleibt der visuelle Schock kontrolliert und spielerisch handhabbar.
+- **Konkreter Design-Vorschlag 3: Prestige-Rangfortschritt (Next-Rival Gauge):** Über der Rich-List visualisiert ein 3px feiner, progressiver Gradient-Balken (`accent`) den prozentualen Vermögensabstand zum nächsten Rivalen (z. B. `68 % auf dem Weg zu Rang #11`). Dies verleiht dem Aufstieg spürbaren Glamour und Ehrgeiz, ohne neuen UI-Clutter zu erzeugen.

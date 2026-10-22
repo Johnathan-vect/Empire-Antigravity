@@ -7,12 +7,12 @@
 ---
 
 ## 📌 Aktueller Projektstatus
-- **Projektphase:** Sprint 3 — Externes Multi-Agenten-Test- & Balancing-System
+- **Projektphase:** Sprint 5 — Manager-Hygiene-Automatisierung, Flexibler Kreditmarkt & Lieferanten-Clamping
 - **Datum:** 22. Oktober 2026
-- **Status:** **Erfolgreich implementiert & verifiziert (Sprint 3 abgeschlossen)**
+- **Status:** **Erfolgreich implementiert, getestet & verifiziert (Sprint 5 abgeschlossen)**
 - **Kompilierung:** TypeScript `npm.cmd run typecheck` ➔ **0 Fehler (Exit-Code 0)**
 - **Build & Dev:** Vite 8.3 / React 19 / TanStack Start / Tailwind v4 / Zustand 5 (100 % autark, `dist/` ohne Agent-Code)
-- **Test-Status:** Automatisierte Persona-Playtests (Desktop & Mobile) und Headless-Wirtschafts-Simulation aktiv.
+- **Test-Status:** Automatisierte Persona-Playtests, E2E-Playthrough (23 Tage) und Sprint-5-Verifikationssuite aktiv und grün.
 
 ---
 
@@ -37,14 +37,22 @@ Empire ist eine deutsche Wirtschaftssimulation. Der Spieler startet als Privatpe
 - [x] **Sprint 1:** Fundament, Dokumentation & Stabilität (Erledigt)
 - [x] **Sprint 2:** Branchen-Ausbau, Standort-Spezialisierung & Filialnetze (Erledigt)
 - [x] **Sprint 3:** Externes Multi-Agenten-Test- & Balancing-System (Erledigt)
-- [x] **UX/UI Refactor Betriebsfenster & Mehrtages-Kundenstrom:**
-  - [x] Hygiene & Sauberkeit oben als 2-Spalten-Duo mit Schnellputz-Aktion
-  - [x] GuV & Cashflow harmonisiert mit Direkt-Umschalter und einklappbaren Fixkosten
-  - [x] Kompakter Live-Kundenstrom mit einklappbaren Faktoren
-  - [x] Grafisches Mehrtages-Balkendiagramm (`CustomerBarChart.tsx`) für Kundenstrom (7 Tage Historie + Heute)
-- [x] **Auto-Order Optimierung:**
-  - [x] Dynamischer Meldebestand: Lead Time Demand + Sicherheitsbestand basierend auf Verkaufsrate und Lieferzeit
-  - [x] Dynamische Bestellcharge für ca. 20 Betriebsstunden
-  - [x] Cash-Aware Sizing: Automatische Herunterskalierung auf bezahlbare Höchstmenge bei knapper Kasse
-  - [x] Transparente UI im Bestell-Modal und Slot-Badge (`Auto-Order (≤ X Stk.)`)
-- [ ] **Nächster Schritt:** Implementierung weiterer Balancing- & Gameplay-Erweiterungen (Lieferanten-Vertragsstrafen, weitere Branchen-Features)
+- [x] **Sprint 3.1 & 3.2: Dynamisches Balancing, Schieberegler & Mobile-Harmonisierung (Erledigt):**
+  - [x] Faires Lieferanten-Bailout (450 € beim Imbiss) mit 3-Stufen-Rehabilitation (40 % Startlaune, 60 % Kapazität)
+  - [x] Flexibler Schieberegler für Start-Betriebskasse (500 € – 3.000 €) mit 3-stufiger Ampel in Schritt 3
+  - [x] Beseitigung der 0-€-Miet-Anomalie am Hauptbahnhof (faire ~36–40 €/Tag Miete)
+  - [x] Korrektur der Standort-Anzeige (dynamischer Standortname statt statischem „0 € (Kiez)“)
+  - [x] Dezente gelbe Notification-Dots an Tabs bei Handlungsbedarf
+  - [x] Mobile Daumenzonen-Floater für 1-Tap-Reinigung und Sortimentsprüfung
+- [x] **Sprint 4: Komplett-Spieler-Playthrough (Tag 1 bis 23) & Gameplay-Analyse (Erledigt):**
+  - [x] 13 chronologische Meilenstein-Screenshots generiert
+  - [x] Durchlauf von Gründung (Imbiss) über Filialkette, Café, Trendshop, Aktien, Krypto bis zur Eigentumswohnung
+  - [x] 5 akute Schmerzpunkte identifiziert und im interaktiven Report dokumentiert
+- [x] **Sprint 5: Manager-Hygiene, Flexibler Kreditmarkt & Lieferanten-Clamping (Erledigt):**
+  - [x] Manager-Hygiene-Routine: Automatische Reinigung rund um die Uhr bei Hygiene < 80 % (40 € aus Firmenkasse, +22 % Sauberkeit)
+  - [x] Transparente UI-Badges für automatische Hygiene im Betriebs- und Teamfenster
+  - [x] Flexibler Bankkreditmarkt: 3 Darlehensstaffeln (Betriebsmittel 11,5 %, Unternehmer 7,8 %, Großinvestition 5,4 %)
+  - [x] Interaktiver Kreditaufnahme-Dialog im Finanz-Screen mit Kreditauswahl, Slider, Schnellwahltasten und Verwendungszweck (Privat / Firma)
+  - [x] Lieferanten-Bestellobergrenze (Clamping): Automatische Kappung auf `maxOrderQty` statt Abbruch mit Fehlerhinweis
+  - [x] Wahrung der legalen Unternehmenstrennung: Verzicht auf unrealistische Quertransfers; Dokumentation realistischer Holding-/Darlehenskonzepte
+- [ ] **Nächster Schritt:** Weiterer Ausbau der Holding- & Konzernmechaniken (Gesellschafterdarlehen mit Zinsen, Holding-Cash-Pooling, Dividenden-Politik)

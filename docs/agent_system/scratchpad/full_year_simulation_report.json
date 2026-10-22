@@ -1,0 +1,293 @@
+{
+  "simulationDays": 360,
+  "endNetWorth": 134595,
+  "endPlayerCash": 18800,
+  "companies": [
+    {
+      "name": "Bahnhofs-Grill Meister",
+      "industry": "imbiss",
+      "scale": "local",
+      "level": 1,
+      "cash": 115637,
+      "lifetimeRevenue": 191384,
+      "lifetimeProfit": 115917,
+      "hygiene": 87.79999999996562
+    }
+  ],
+  "realEstateCount": 0,
+  "milestones": [
+    {
+      "day": 1,
+      "event": "Gründung Imbiss am Hauptbahnhof",
+      "companyCash": 1200,
+      "playerCash": 18800,
+      "netWorth": 20000
+    }
+  ],
+  "curve": [
+    {
+      "day": 15,
+      "year": 1,
+      "netWorth": 27047,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 6940,
+      "currentRank": "Noch unplatziert (> 30.000 €)",
+      "reputation": 15
+    },
+    {
+      "day": 30,
+      "year": 1,
+      "netWorth": 34307,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 14185,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 45,
+      "year": 1,
+      "netWorth": 38334,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 18469,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 60,
+      "year": 1,
+      "netWorth": 42495,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 22669,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 75,
+      "year": 1,
+      "netWorth": 47003,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 27159,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 90,
+      "year": 1,
+      "netWorth": 51553,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 31754,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 105,
+      "year": 1,
+      "netWorth": 56256,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 36524,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 120,
+      "year": 1,
+      "netWorth": 60875,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 41222,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 135,
+      "year": 1,
+      "netWorth": 65586,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 45980,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 150,
+      "year": 1,
+      "netWorth": 70122,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 50626,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 165,
+      "year": 1,
+      "netWorth": 74760,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 55338,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 180,
+      "year": 1,
+      "netWorth": 79499,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 60205,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 195,
+      "year": 1,
+      "netWorth": 84250,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 64857,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 210,
+      "year": 1,
+      "netWorth": 88842,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 69562,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 225,
+      "year": 1,
+      "netWorth": 93329,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 74078,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 240,
+      "year": 1,
+      "netWorth": 97679,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 78524,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 255,
+      "year": 1,
+      "netWorth": 102315,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 83170,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 270,
+      "year": 1,
+      "netWorth": 106878,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 87830,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 285,
+      "year": 1,
+      "netWorth": 111553,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 92535,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 300,
+      "year": 1,
+      "netWorth": 116129,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 97194,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 315,
+      "year": 1,
+      "netWorth": 120797,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 101919,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 330,
+      "year": 1,
+      "netWorth": 125355,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 106553,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 345,
+      "year": 1,
+      "netWorth": 130016,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 111258,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    },
+    {
+      "day": 360,
+      "year": 1,
+      "netWorth": 134595,
+      "playerCash": 18800,
+      "companiesCount": 1,
+      "totalCompanyRevenueToday": 0,
+      "totalCompanyProfitLifetime": 115917,
+      "currentRank": "#12 (Nora Lindner)",
+      "reputation": 15
+    }
+  ]
+}

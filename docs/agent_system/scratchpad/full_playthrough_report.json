@@ -1,0 +1,221 @@
+{
+  "startedAt": "2026-10-22T19:47:45.448Z",
+  "milestones": [
+    {
+      "act": 1,
+      "name": "Dashboard geladen",
+      "day": 1,
+      "cash": 25000,
+      "notes": "Saubere Willkommens-UI, freie Liquidität 25k, keine Betriebe."
+    },
+    {
+      "act": 2,
+      "name": "Erster Betrieb gegründet",
+      "companyId": "co_s2ewoe_9",
+      "industry": "imbiss",
+      "location": "bahnhof",
+      "companyName": "Bahnhof Döner & Curry"
+    },
+    {
+      "act": 4,
+      "name": "Team & Hygiene gesichert",
+      "employee": "None available",
+      "hygieneBudget": 35
+    },
+    {
+      "act": 5,
+      "name": "Stufe 2 & Sortimentserweiterung",
+      "notes": "Currywurst & Pommes decken Hauptmenü ab."
+    },
+    {
+      "act": 6,
+      "name": "Auto-Order & Vollautomatisierung aktiv",
+      "level": 3,
+      "notes": "Dynamischer Meldebestand und Charge sichern unterbrechungsfreien Betrieb."
+    },
+    {
+      "act": 7,
+      "name": "Kapitalmarkt & Depot erschlossen",
+      "loanTaken": 8000,
+      "notes": "Dividendenerträge und Wertsteigerung diversifizieren das Vermögen."
+    },
+    {
+      "act": 8,
+      "name": "Franchise-Kette & 2. Branche",
+      "companiesCount": 2,
+      "notes": "Imbiss auf Ladenkette skaliert; Café an belebter Geschäftsstraße eröffnet."
+    },
+    {
+      "act": 9,
+      "name": "Branchen-Trio komplett",
+      "companiesCount": 3,
+      "notes": "Streetfood, Gastronomie und Luxus-Einzelhandel synchron am Laufen."
+    },
+    {
+      "act": 10,
+      "name": "Immobilieninvestor & schuldenfrei",
+      "propertiesCount": 0,
+      "debt": 0
+    }
+  ],
+  "uxObservations": [],
+  "balanceChecks": [],
+  "errorsEncountered": [],
+  "screenshots": [
+    {
+      "name": "01_start_dashboard",
+      "label": "Tag 1 - Frisches Dashboard mit 25.000 €",
+      "file": "01_start_dashboard.png"
+    },
+    {
+      "name": "02_founding_dialog",
+      "label": "Gründungs-Assistent: Schritt 1 Branche wählen",
+      "file": "02_founding_dialog.png"
+    },
+    {
+      "name": "03_company_overview_empty",
+      "label": "Imbiss-Detailansicht: Hygiene-Duo & Finanzen im Header",
+      "file": "03_company_overview_empty.png"
+    },
+    {
+      "name": "04_team_hygiene_set",
+      "label": "Team & Hygiene: Mitarbeiter aktiv & Grundreinigung durchgeführt",
+      "file": "04_team_hygiene_set.png"
+    },
+    {
+      "name": "05_day7_performance",
+      "label": "Tag 7 - Aktive Kundenströme, GuV & Besucher-Balkendiagramm",
+      "file": "05_day7_performance.png"
+    },
+    {
+      "name": "06_level2_second_product",
+      "label": "Stufe 2 erreicht: 2. Produkt 'Pommes' aktiv",
+      "file": "06_level2_second_product.png"
+    },
+    {
+      "name": "07_auto_order_manager_active",
+      "label": "Stufe 3 - Manager & Einkaufs-Assistent (Auto-Order) voll aktiv",
+      "file": "07_auto_order_manager_active.png"
+    },
+    {
+      "name": "08_finance_loan_taken",
+      "label": "Finanz-Screen: Kreditkonditionen & 500 € Sondertilgung verbucht",
+      "file": "08_finance_loan_taken.png"
+    },
+    {
+      "name": "09_stock_crypto_portfolio",
+      "label": "Börsen-Screen: Aktiendepot mit Dividendentitel & Krypto",
+      "file": "09_stock_crypto_portfolio.png"
+    },
+    {
+      "name": "10_multi_company_overview",
+      "label": "Unternehmens-Portfolio: Imbiss-Kette & Café & Bistro synchron",
+      "file": "10_multi_company_overview.png"
+    },
+    {
+      "name": "11_retail_trendshop_added",
+      "label": "Branchen-Trio: Imbiss, Café und Trendshop aktiv",
+      "file": "11_retail_trendshop_added.png"
+    },
+    {
+      "name": "12_real_estate_luxury",
+      "label": "Besitz-Screen: Immobilien-Mieterträge & Sammlungen aktiv",
+      "file": "12_real_estate_luxury.png"
+    },
+    {
+      "name": "13_endgame_richlist",
+      "label": "Endgame Dashboard: Vermögen, Rangliste & passiver Cashflow",
+      "file": "13_endgame_richlist.png"
+    }
+  ],
+  "finalReport": {
+    "gameDays": 23,
+    "playerName": "",
+    "personalCash": 28540,
+    "companies": [
+      {
+        "name": "Bahnhof Döner & Curry",
+        "industry": "imbiss",
+        "scale": "smallChain",
+        "level": 3,
+        "cash": 5868.194588869609,
+        "lifetimeRevenue": 27053,
+        "lifetimeProfit": -10503,
+        "hygiene": 81,
+        "activeProducts": [
+          {
+            "id": "doener",
+            "stock": 0,
+            "autoOrder": false
+          },
+          {
+            "id": "pommes",
+            "stock": 73,
+            "autoOrder": true
+          }
+        ]
+      },
+      {
+        "name": "Café Antigravity",
+        "industry": "cafe",
+        "scale": "local",
+        "level": 1,
+        "cash": 2624.999999999998,
+        "lifetimeRevenue": 570,
+        "lifetimeProfit": -375,
+        "hygiene": 32,
+        "activeProducts": [
+          {
+            "id": "c_espresso",
+            "stock": 0,
+            "autoOrder": false
+          }
+        ]
+      },
+      {
+        "name": "Trendshop Neo Lifestyle",
+        "industry": "shop",
+        "scale": "local",
+        "level": 1,
+        "cash": 2395,
+        "lifetimeRevenue": 3105,
+        "lifetimeProfit": -2605,
+        "hygiene": 32,
+        "activeProducts": [
+          {
+            "id": "s_audio",
+            "stock": 0,
+            "autoOrder": false
+          }
+        ]
+      }
+    ],
+    "realEstate": [
+      "re_micro"
+    ],
+    "collections": [
+      "col_coin_1"
+    ],
+    "possessions": [
+      "bike",
+      "watch"
+    ],
+    "holdings": [
+      {
+        "ticker": "HLS",
+        "shares": 20,
+        "avgCost": 43.93
+      }
+    ],
+    "cryptoHoldings": [
+      {
+        "symbol": "BTCX",
+        "coins": 0.08,
+        "avgCost": 3023.77
+      }
+    ],
+    "totalOutOfStock": 3,
+    "debtRemaining": 0
+  },
+  "finishedAt": "2026-10-22T19:48:09.388Z"
+}

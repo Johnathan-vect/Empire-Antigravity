@@ -329,12 +329,19 @@ export interface Company {
   insolventAtGameDay?: number;
   buybackUntilGameDay?: number;
   buybackPrice?: number;
+  autoDividend?: boolean;
+  dividendPct?: number; // 10 bis 100, Standard 70
+  strikeActiveUntil?: number; // gameMinutes bis Streikende
 }
+
+export type LoanCategory = "micro" | "classic" | "invest" | "founding";
 
 export interface Loan {
   id: string;
   owner: LoanOwner;
   companyId?: string;
+  category?: LoanCategory;
+  label?: string;
   principal: number;
   remaining: number;
   annualRate: number;
@@ -353,6 +360,34 @@ export interface YearEvent {
   body: string;
 }
 
+export type MacroCycle = "boom" | "normal" | "recession";
+
+export interface CommodityPrices {
+  meat: number;
+  grain: number;
+  coffeeBeans: number;
+  hardware: number;
+}
+
+export interface MacroState {
+  cycle: MacroCycle;
+  interestRate: number; // z.B. 0.065 für 6.5 %
+  inflationRate: number; // z.B. 0.024 für 2.4 %
+  cycleDaysRemaining: number;
+  commodities: CommodityPrices;
+  trendLabel: string;
+}
+
+export interface DistrictCompetitor {
+  id: string;
+  name: string;
+  rivalName: string;
+  industry: Industry;
+  locationId: LocationId;
+  marketSharePct: number;
+  reputation: number;
+}
+
 export interface Market {
   demand: number;
   prevDemand?: number;
@@ -364,6 +399,8 @@ export interface Market {
   yearEvent?: YearEvent;
   demandByProduct: Record<string, number>;
   prevDemandByProduct?: Record<string, number>;
+  macro?: MacroState;
+  districtCompetitors?: DistrictCompetitor[];
 }
 
 export interface EventOption {
@@ -381,6 +418,7 @@ export interface GameEvent {
   productId?: string;
   options: EventOption[];
   createdAt: number;
+  deadlineMinutes?: number;
 }
 
 export interface LedgerEntry {
@@ -448,6 +486,7 @@ export interface UiState {
   selectedCrypto?: string | null;
   showFounding: boolean;
   showMarketAnalysis?: boolean;
+  showMacroDrawer?: boolean;
   showSettings: boolean;
 }
 

@@ -33,6 +33,7 @@ import {
   resolveYearEdge,
   stockValue,
   tickMinutes,
+  tryBorrowLoan,
   tryBuyCollectionItem,
   tryBuyIndustryLicense,
   tryBuyRealEstate,
@@ -46,6 +47,7 @@ import {
   tryTransfer,
   tryUpgradeCompanyScale,
   tryUpgradeRealEstate,
+  tryWithdrawCompanyDividend,
   usedCompanyCredit,
 } from "./sim";
 import type {
@@ -54,6 +56,7 @@ import type {
   Employee,
   GameState,
   Industry,
+  LoanOwner,
   LocationId,
   OfflineReport,
   SimBurst,
@@ -73,6 +76,7 @@ type Store = GameState & {
   dismissWelcome: () => void;
   openFounding: (open: boolean) => void;
   openMarketAnalysis: (open: boolean) => void;
+  openMacroDrawer: (open: boolean) => void;
   openSettings: (open: boolean) => void;
   openCompany: (id: string | null) => void;
   setCompanyTab: (companyTab: CompanyTabId) => void;
@@ -116,9 +120,18 @@ type Store = GameState & {
   fireEmployee: (companyId: string, employeeId: string) => string | null;
   toggleManager: (companyId: string) => string | null;
   toggleProductAutoOrder: (companyId: string, productId: string) => string | null;
+  toggleAutoDividend: (companyId: string) => void;
+  setDividendPct: (companyId: string, pct: number) => void;
+  withdrawCompanyDividend: (companyId: string, amount?: number) => string | null;
   replenishApplications: (companyId?: string) => string | null;
   buybackCompany: (companyId: string) => string | null;
   transfer: (companyId: string, amount: number) => string | null;
+  borrowLoan: (
+    category: "micro" | "classic" | "invest",
+    amount: number,
+    owner: LoanOwner,
+    companyId?: string,
+  ) => string | null;
   extraPayment: (loanId: string, amount: number) => string | null;
   buyShares: (ticker: string, shares: number) => string | null;
   sellShares: (ticker: string, shares: number) => string | null;
@@ -286,6 +299,14 @@ export const useGame = create<Store>((set, get) => ({
         selectedCrypto: null,
         companyId: open ? null : s.ui.companyId,
         tab: open ? "biz" : s.ui.tab,
+      },
+    })),
+  openMacroDrawer: (open) =>
+    set((s) => ({
+      ...s,
+      ui: {
+        ...s.ui,
+        showMacroDrawer: open,
       },
     })),
   openSettings: (open) => set((s) => ({ ...s, ui: { ...s.ui, showSettings: open } })),
@@ -762,6 +783,31 @@ export const useGame = create<Store>((set, get) => ({
     return err;
   },
 
+  toggleAutoDividend: (companyId) => {
+    patch(set, get, (st) => {
+      const c = st.companies.find((x) => x.id === companyId);
+      if (!c) return;
+      c.autoDividend = !c.autoDividend;
+    });
+  },
+
+  setDividendPct: (companyId, pct) => {
+    const valid = Math.max(10, Math.min(100, Math.round(pct)));
+    patch(set, get, (st) => {
+      const c = st.companies.find((x) => x.id === companyId);
+      if (!c) return;
+      c.dividendPct = valid;
+    });
+  },
+
+  withdrawCompanyDividend: (companyId, amount) => {
+    let err: string | null = null;
+    patch(set, get, (st) => {
+      err = tryWithdrawCompanyDividend(st, companyId, amount);
+    });
+    return err;
+  },
+
   replenishApplications: (companyId) => {
     let err: string | null = null;
     patch(set, get, (st) => {
@@ -807,6 +853,14 @@ export const useGame = create<Store>((set, get) => ({
     let err: string | null = null;
     patch(set, get, (st) => {
       err = tryTransfer(st, companyId, amount);
+    });
+    return err;
+  },
+
+  borrowLoan: (category, amount, owner, companyId) => {
+    let err: string | null = null;
+    patch(set, get, (st) => {
+      err = tryBorrowLoan(st, category, amount, owner, companyId);
     });
     return err;
   },

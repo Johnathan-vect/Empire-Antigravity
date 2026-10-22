@@ -40,7 +40,7 @@ export function FoundingFlow() {
   const [selectedLocation, setSelectedLocation] = useState<LocationId>("kiez");
   const [selectedScale, setSelectedScale] = useState<CompanyScaleId>("local");
   const [name, setName] = useState(DEFAULT_NAMES.imbiss);
-  const [extra, setExtra] = useState(500);
+  const [extra, setExtra] = useState(1200);
   const [err, setErr] = useState<string | null>(null);
 
   const indDef = industryById(selectedIndustry);
@@ -520,23 +520,55 @@ export function FoundingFlow() {
             </p>
           </div>
 
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-muted">
-              Optionale Einlage in die Firmenkasse
-            </span>
-            <Input
-              className="mt-1"
-              type="number"
-              min={0}
+          {/* Start-Umlaufvermögen (Schieberegler mit Ampel) */}
+          <div className="rounded-xl bg-raised p-3.5 space-y-2 border border-[var(--border-subtle)]">
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-medium text-fg">Start-Betriebskasse (Umlaufvermögen)</span>
+              <span className="tabular font-bold text-accent">{money(extraAmt)}</span>
+            </div>
+            <Slider
+              className="mt-2"
+              min={500}
+              max={Math.min(3000, Math.max(500, Math.floor(s.cash - safeEquity)))}
               step={50}
-              value={extra || ""}
-              placeholder="0"
-              onChange={(e) => setExtra(Math.max(0, Number(e.target.value) || 0))}
+              value={[extraAmt]}
+              onValueChange={(v) => setExtra(v[0] ?? 1200)}
             />
-            <span className="text-[11px] text-muted mt-1 block">
-              Guthaben für den ersten Wareneinkauf in der Firmenkasse.
-            </span>
-          </label>
+            <div className="flex items-center justify-between text-[11px] text-muted">
+              <span>Min: 500 €</span>
+              <span>Max: {money(Math.min(3000, Math.max(500, Math.floor(s.cash - safeEquity))))}</span>
+            </div>
+
+            {/* Dynamische Liquiditäts-Ampel */}
+            <div
+              className={cn(
+                "rounded-lg px-2.5 py-1.5 text-xs flex items-center gap-2 mt-1",
+                extraAmt < 800
+                  ? "bg-loss/15 text-loss border border-loss/30"
+                  : extraAmt <= 1500
+                    ? "bg-accent/15 text-accent border border-accent/30"
+                    : "bg-gain/15 text-gain border border-gain/30",
+              )}
+            >
+              <span
+                className={cn(
+                  "size-2 rounded-full shrink-0",
+                  extraAmt < 800
+                    ? "bg-loss animate-pulse"
+                    : extraAmt <= 1500
+                      ? "bg-accent"
+                      : "bg-gain",
+                )}
+              />
+              <span>
+                {extraAmt < 800
+                  ? "Kritisch: Kaum Puffer für Miete & Wareneinkauf (40 €/Tag Reinigung)!"
+                  : extraAmt <= 1500
+                    ? "Solider Startpuffer: Ausreichend für erste Lieferungen und Fixkosten."
+                    : "Komfortabel: Hohe Sicherheit gegen anfängliche Nachfrageschwankungen."}
+              </span>
+            </div>
+          </div>
 
           <dl className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
             <Row k="Privat vorher" v={money(s.cash)} />

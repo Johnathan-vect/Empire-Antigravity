@@ -2,7 +2,10 @@ import {
   CLEANING_COST,
   COLLECTION_CATEGORIES,
   COLLECTION_ITEMS,
+  CREDIT_OFFERS,
   CRYPTOS,
+  DEFAULT_DISTRICT_COMPETITORS,
+  DEFAULT_MACRO,
   HISTORY_CAP,
   HOUR_CURVE,
   HYGIENE_START,
@@ -13,6 +16,7 @@ import {
   MINUTES_PER_DAY,
   MINUTES_PER_HOUR,
   POSSESSIONS,
+  PRODUCT_COMMODITY_MAP,
   PRODUCTS,
   REAL_ESTATE,
   STOCKS,
@@ -60,7 +64,12 @@ import type {
   Gender,
   Industry,
   LedgerEntry,
+  Loan,
+  LoanCategory,
+  LoanOwner,
   LocationId,
+  MacroCycle,
+  MacroState,
   OwnedProperty,
   ProductOffering,
   Role,
@@ -103,6 +112,7 @@ export function offeringUnitCost(
   company: Company,
   offering: ProductOffering,
   customOffer?: SupplierOffer,
+  macro?: MacroState,
 ): number {
   const def = productById(offering.productId);
   const priceMult =
@@ -113,7 +123,10 @@ export function offeringUnitCost(
   const storageLvl = company.upgrades?.storage ?? 0;
   const storageDiscount = 1 - storageLvl * 0.04;
   const scaleDiscount = company.scale === "largeChain" ? 0.92 : 1;
-  return def.baseCost * priceMult * volDisc * storageDiscount * scaleDiscount;
+  const commKey = PRODUCT_COMMODITY_MAP[offering.productId];
+  const commMult = commKey && macro?.commodities?.[commKey] ? macro.commodities[commKey] : 1;
+  const inflationMult = 1 + (macro?.inflationRate ?? 0);
+  return def.baseCost * priceMult * volDisc * storageDiscount * scaleDiscount * commMult * inflationMult;
 }
 
 export function offeringQuality(
@@ -612,6 +625,62 @@ export function tryExtraPayment(st: GameState, loanId: string, amount: number): 
   return null;
 }
 
+export function tryBorrowLoan(
+  st: GameState,
+  category: "micro" | "classic" | "invest",
+  amount: number,
+  owner: LoanOwner,
+  companyId?: string,
+): string | null {
+  const offer = CREDIT_OFFERS.find((o) => o.id === category);
+  if (!offer) return "Unbekannter Kredit-Typ.";
+  const amt = Math.round(amount);
+  if (amt <= 0 || !Number.isFinite(amt)) return "Betrag muss mindestens 1 € betragen.";
+  if (st.reputation < offer.minReputation) {
+    return `Erfordert mindestens ${offer.minReputation} Ansehen (Ruf) für die Bonitätsprüfung.`;
+  }
+  if (offer.minNetWorth && netWorth(st) < offer.minNetWorth) {
+    return `Erfordert mindestens ${offer.minNetWorth.toLocaleString("de-DE")} € Gesamtvermögen.`;
+  }
+  if (amt > offer.maxAmount) {
+    return `Höchstbetrag für ${offer.name} liegt bei ${offer.maxAmount.toLocaleString("de-DE")} €.`;
+  }
+  const avail = (st.creditLimit ?? 15_000) - usedCompanyCredit(st);
+  if (amt > avail + 0.01) {
+    return `Freier Kreditrahmen nicht ausreichend (verfügbar: ${Math.max(0, Math.round(avail)).toLocaleString("de-DE")} €).`;
+  }
+
+  const clock = readClock(st);
+  const day = (st.year - 1) * YEAR_LENGTH_DAYS + clock.day;
+  const newLoan: Loan = {
+    id: nid("ln"),
+    owner,
+    companyId: owner === "company" ? companyId : undefined,
+    category: offer.id,
+    label: offer.name,
+    principal: amt,
+    remaining: amt,
+    annualRate: offer.annualRate,
+    accruedInterest: 0,
+    createdAtGameDay: day,
+  };
+
+  if (owner === "company") {
+    if (!companyId) return "Kein Unternehmen ausgewählt.";
+    const c = st.companies.find((x) => x.id === companyId);
+    if (!c || c.status !== "active") return "Unternehmen nicht aktiv.";
+    c.cash += amt;
+    st.loans.push(newLoan);
+    syncCompanyDebt(st, c);
+    pushLedger(st, `Kreditaufnahme ${offer.name} (${c.name})`, amt, "company");
+  } else {
+    st.cash += amt;
+    st.loans.push(newLoan);
+    pushLedger(st, `Kreditaufnahme ${offer.name}`, amt, "loan");
+  }
+  return null;
+}
+
 export function tickMinutes(state: GameState, minutes: number, burst?: SimBurst): GameState {
   if (state.pendingYearEnd || state.insolvent) return state;
   const cap = yearCapMinutes(state);
@@ -672,6 +741,88 @@ function processDeliveries(s: GameState): void {
   }
 }
 
+function tickMacroEconomy(s: GameState, day: number): void {
+  void day;
+  if (!s.market.macro) s.market.macro = { ...DEFAULT_MACRO };
+  const m = s.market.macro;
+  m.cycleDaysRemaining -= 1;
+
+  if (m.cycleDaysRemaining <= 0) {
+    const nextCycle: Record<MacroCycle, MacroCycle> = {
+      normal: Math.random() > 0.5 ? "boom" : "recession",
+      boom: "normal",
+      recession: "normal",
+    };
+    m.cycle = nextCycle[m.cycle] ?? "normal";
+    m.cycleDaysRemaining = 45 + Math.floor(Math.random() * 45); // 45 bis 90 Tage
+
+    if (m.cycle === "boom") {
+      m.interestRate = Math.round((0.08 + Math.random() * 0.035) * 1000) / 1000;
+      m.inflationRate = Math.round((0.035 + Math.random() * 0.02) * 1000) / 1000;
+      m.commodities.meat = 1.15;
+      m.commodities.grain = 1.12;
+      m.commodities.coffeeBeans = 1.2;
+      m.commodities.hardware = 1.1;
+      m.trendLabel = "Boomende Gesamtwirtschaft · Hohe Nachfrage & steigende Zinsen";
+      s.market.demand = Math.min(1.4, s.market.demand + 0.12);
+    } else if (m.cycle === "recession") {
+      m.interestRate = Math.round((0.04 + Math.random() * 0.018) * 1000) / 1000;
+      m.inflationRate = Math.round((0.012 + Math.random() * 0.008) * 1000) / 1000;
+      m.commodities.meat = 0.9;
+      m.commodities.grain = 0.92;
+      m.commodities.coffeeBeans = 0.88;
+      m.commodities.hardware = 0.95;
+      m.trendLabel = "Konjunktureller Abschwung · Günstige Kredite & zäher Konsum";
+      s.market.demand = Math.max(0.75, s.market.demand - 0.12);
+    } else {
+      m.interestRate = 0.065;
+      m.inflationRate = 0.022;
+      m.commodities.meat = 1.0;
+      m.commodities.grain = 1.0;
+      m.commodities.coffeeBeans = 1.0;
+      m.commodities.hardware = 1.0;
+      m.trendLabel = "Stabile Binnenkonjunktur";
+    }
+
+    // Kreditzinsen anpassen
+    for (const loan of s.loans) {
+      if (loan.owner === "company") {
+        loan.annualRate = Math.round((m.interestRate + 0.035) * 1000) / 1000;
+      }
+    }
+  }
+
+  // Organische Rivalen sicherstellen
+  if (!s.market.districtCompetitors) {
+    s.market.districtCompetitors = [...DEFAULT_DISTRICT_COMPETITORS];
+  }
+}
+
+export function tryWithdrawCompanyDividend(
+  s: GameState,
+  companyId: string,
+  amount?: number,
+): string | null {
+  const company = s.companies.find((c) => c.id === companyId);
+  if (!company || company.status !== "active") return "Betrieb nicht aktiv.";
+  const dailyBurn =
+    (company.rentPerDay || 20) +
+    (company.employees?.reduce((sum, e) => sum + e.wage, 0) || 0) +
+    40;
+  const minBuffer = dailyBurn * 5 + 300;
+  const freeCash = Math.max(0, company.cash - minBuffer);
+  if (freeCash < 10) {
+    return `Kein freier Gewinn über dem 5-Tage-Fixkostenpuffer (${minBuffer.toLocaleString("de-DE")} €) verfügbar.`;
+  }
+  const toWithdraw = amount !== undefined ? Math.min(amount, freeCash) : freeCash;
+  if (toWithdraw <= 0) return "Ungültiger Betrag.";
+  company.cash -= toWithdraw;
+  s.cash += toWithdraw;
+  s.stats.fromDividends = (s.stats?.fromDividends ?? 0) + toWithdraw;
+  pushLedger(s, `Gewinnausschüttung (${company.name})`, toWithdraw, "dividend");
+  return null;
+}
+
 function runHour(s: GameState, burst?: SimBurst): void {
   const beforeMarket = stockValue(s) + cryptoValue(s);
   const clock = readClock(s);
@@ -683,6 +834,14 @@ function runHour(s: GameState, burst?: SimBurst): void {
   for (const company of s.companies) {
     if (company.status !== "active") continue;
     tickSupplierSatisfaction(s, company);
+
+    // Automatic manager hygiene cleaning if manager hired (ensures 24/7 hygiene >= 80%)
+    if (company.manager && company.hygiene < 80 && company.cash >= CLEANING_COST) {
+      company.cash -= CLEANING_COST;
+      company.todayExpenses += CLEANING_COST;
+      company.hygiene = Math.min(100, company.hygiene + 22);
+    }
+
     if (isOpenHour(clock.hour)) {
       const profitBefore = company.todayRevenue - company.todayExpenses;
       operateHour(s, company, clock.hour);
@@ -1256,7 +1415,7 @@ function tickSupplierSatisfaction(s: GameState, company: Company): void {
       const buybackCost = calculateSupplierBuybackPrice(sup, company.industry ?? "imbiss");
       offering.previousSupplier = {
         ...sup,
-        satisfaction: 75,
+        satisfaction: 40,
         highMoodHours: 0,
       };
       offering.supplierBuybackPrice = buybackCost;
@@ -1279,7 +1438,7 @@ function tickSupplierSatisfaction(s: GameState, company: Company): void {
           {
             id: "buyback-supplier",
             label: `${supName} zurückkaufen · ${buybackCost.toLocaleString("de-DE")} €`,
-            hint: `Behält ${supName} inkl. Ausbaustufe (${sup.minOrderQty ?? 15}–${sup.maxOrderQty ?? 60} Stk.) und setzt die Laune auf 75 %.`,
+            hint: `Reaktiviert ${supName}. Der Lieferant startet im Status 'Gekränkt' mit 40 % Zufriedenheit und vorerst 60 % Liefermenge.`,
           },
           {
             id: "open-supplier",
@@ -1303,18 +1462,11 @@ function tickSupplierSatisfaction(s: GameState, company: Company): void {
 }
 
 export function calculateSupplierBuybackPrice(sup: SupplierOffer, industry: Industry): number {
-  const baseFee =
-    sup.hiringFee && sup.hiringFee > 0
-      ? sup.hiringFee
-      : industry === "shop"
-        ? 520
-        : industry === "cafe"
-          ? 230
-          : 120;
+  const baseTarget = industry === "shop" ? 2600 : industry === "cafe" ? 1050 : 450;
   const baseMax = sup.baseMaxOrderQty ?? sup.maxOrderQty ?? 60;
   const bonusCap = Math.max(0, (sup.maxOrderQty ?? baseMax) - baseMax);
-  const raw = baseFee * 1.5 + bonusCap * 2.5;
-  return Math.max(90, Math.round(raw / 10) * 10);
+  const raw = baseTarget + bonusCap * 2.5;
+  return Math.max(150, Math.round(raw / 10) * 10);
 }
 
 export function generateSupplierCandidates(
@@ -1558,10 +1710,11 @@ export function tryBuybackSupplier(
   p.contractedSupplier = {
     ...prev,
     baseMaxOrderQty: baseMax,
+    maxOrderQty: Math.max(prev.minOrderQty ?? 15, Math.round(baseMax * 0.6)),
     maxOrderCap: prev.maxOrderCap ?? Math.round((baseMax * 3.1) / 10) * 10,
     growthStep: prev.growthStep ?? 20,
     highMoodHours: 0,
-    satisfaction: 75,
+    satisfaction: 40,
   };
   p.previousSupplier = null;
   p.supplierBuybackPrice = undefined;
@@ -1585,6 +1738,7 @@ export interface OrderOutcome {
   etaMinutes: number;
   totalCost: number;
   moodGain?: number;
+  clampedFrom?: number;
 }
 
 export function placeProductOrder(
@@ -1593,7 +1747,7 @@ export function placeProductOrder(
   offering: ProductOffering,
   rawQty: number,
 ): OrderOutcome {
-  const qty = Math.round(rawQty);
+  let qty = Math.round(rawQty);
   if (!Number.isFinite(qty) || qty <= 0) {
     return {
       err: "Menge ungültig.",
@@ -1641,15 +1795,10 @@ export function placeProductOrder(
       totalCost: 0,
     };
   }
+  let clampedFrom: number | undefined;
   if (qty > maxQty) {
-    return {
-      err: `Maximale Lieferkapazität von ${sup.name} liegt bei ${maxQty} Stk. pro Bestellung.`,
-      orderedQty: qty,
-      actualQty: 0,
-      delayed: false,
-      etaMinutes: 0,
-      totalCost: 0,
-    };
+    clampedFrom = qty;
+    qty = maxQty;
   }
 
   const cost = qty * offeringUnitCost(company, offering);
@@ -1710,6 +1859,7 @@ export function placeProductOrder(
     etaMinutes,
     totalCost: cost,
     moodGain,
+    clampedFrom,
   };
 }
 
@@ -1744,6 +1894,12 @@ function runAutoOrder(s: GameState, company: Company): void {
 }
 
 function operateHour(s: GameState, company: Company, hour: number): void {
+  // Vollständiger Streikstillstand (48h keine Verkäufe, aber laufende Fixkosten)
+  if (company.strikeActiveUntil && company.strikeActiveUntil > s.gameMinutes) {
+    company.forecast = "Betrieb durch Streik lahmgelegt (0 € Umsatz).";
+    return;
+  }
+
   const [n, seed] = rngNext(s.rngSeed);
   s.rngSeed = seed;
 
@@ -2153,9 +2309,31 @@ function endOfDay(s: GameState, day: number, year: number, burst?: SimBurst): vo
     company.todayCustomers = 0;
     company.todayCogs = 0;
     company.todayWages = 0;
+
+    // Automatische Dividenden-Ausschüttung (falls bewusst aktiviert & Gewinn erzielt)
+    if (company.autoDividend && company.yesterday && company.yesterday.profit > 0) {
+      const dailyBurn =
+        (company.rentPerDay || 20) +
+        (company.employees?.reduce((sum, e) => sum + e.wage, 0) || 0) +
+        40;
+      const minBuffer = dailyBurn * 5 + 300;
+      if (company.cash > minBuffer) {
+        const payoutRatio = (company.dividendPct ?? 70) / 100;
+        const maxAffordable = company.cash - minBuffer;
+        const targetPayout = Math.round(company.yesterday.profit * payoutRatio);
+        const payout = Math.min(maxAffordable, targetPayout);
+        if (payout >= 10) {
+          company.cash -= payout;
+          s.cash += payout;
+          s.stats.fromDividends = (s.stats?.fromDividends ?? 0) + payout;
+          pushLedger(s, `Dividende (${company.name})`, payout, "dividend");
+        }
+      }
+    }
   }
 
   tickMarketPulse(s, day);
+  tickMacroEconomy(s, day);
   replenishApplicants(s);
 
   if (!burst) {

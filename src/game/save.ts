@@ -1,5 +1,7 @@
 import {
   CRYPTOS,
+  DEFAULT_DISTRICT_COMPETITORS,
+  DEFAULT_MACRO,
   PRODUCTS,
   SAVE_KEY,
   SAVE_KEY_LEGACY,
@@ -203,6 +205,8 @@ export function newGame(career?: Career): GameState {
         "Aktueller Trend: Hohe Nachfrage bei Döner, Matcha & Iced Latte sowie Kopfhörer & Audio.",
       demandByProduct: emptyDemand(),
       prevDemandByProduct: defaultPrevDemand(),
+      macro: { ...DEFAULT_MACRO },
+      districtCompetitors: [...DEFAULT_DISTRICT_COMPETITORS],
     },
     applications: [],
     inbox: [],
@@ -418,6 +422,9 @@ function migrateCompany(raw: unknown): Company | null {
     insolventAtGameDay: c.insolventAtGameDay,
     buybackUntilGameDay: c.buybackUntilGameDay,
     buybackPrice: c.buybackPrice,
+    autoDividend: Boolean(c.autoDividend),
+    dividendPct: typeof c.dividendPct === "number" ? c.dividendPct : 70,
+    strikeActiveUntil: typeof c.strikeActiveUntil === "number" ? c.strikeActiveUntil : undefined,
   };
 }
 
@@ -540,6 +547,10 @@ export function migrate(raw: unknown): GameState {
             : fallback.market.pulseNote,
         demandByProduct: mergedDemand,
         prevDemandByProduct: mergedPrevDemand,
+        macro: s.market?.macro ?? { ...DEFAULT_MACRO },
+        districtCompetitors: Array.isArray(s.market?.districtCompetitors)
+          ? s.market.districtCompetitors
+          : [...DEFAULT_DISTRICT_COMPETITORS],
       };
     })(),
     ui: {

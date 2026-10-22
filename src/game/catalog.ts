@@ -2,13 +2,18 @@ import type {
   CollectionCategoryDef,
   CollectionCategoryId,
   CollectionItemDef,
+  CommodityPrices,
   CompanyScaleDef,
   CompanyScaleId,
   CryptoDef,
+  DistrictCompetitor,
   Industry,
   IndustryDef,
   LocationDef,
   LocationId,
+  LoanCategory,
+  MacroCycle,
+  MacroState,
   MergerDef,
   PossessionDef,
   ProductDef,
@@ -30,6 +35,132 @@ export const FOUNDING_COST = FOUNDING_FEE;
 export const WORKING_CAPITAL = 0;
 export const CREDIT_LIMIT_START = 15_000;
 export const INTEREST_ANNUAL = 0.1;
+
+export const DEFAULT_MACRO: MacroState = {
+  cycle: "normal",
+  interestRate: 0.065,
+  inflationRate: 0.022,
+  cycleDaysRemaining: 60,
+  commodities: {
+    meat: 1.0,
+    grain: 1.0,
+    coffeeBeans: 1.0,
+    hardware: 1.0,
+  },
+  trendLabel: "Stabile Binnenkonjunktur",
+};
+
+export const PRODUCT_COMMODITY_MAP: Record<string, keyof CommodityPrices> = {
+  hotdog: "meat",
+  pommes: "grain",
+  doener: "meat",
+  pizza: "grain",
+  taco: "meat",
+  c_espresso: "coffeeBeans",
+  c_croissant: "grain",
+  c_matcha: "coffeeBeans",
+  c_bagel: "grain",
+  c_cake: "grain",
+  s_shirt: "hardware",
+  s_audio: "hardware",
+  s_watch: "hardware",
+  s_sneaker: "hardware",
+  s_jacket: "hardware",
+};
+
+export const DEFAULT_DISTRICT_COMPETITORS: DistrictCompetitor[] = [
+  {
+    id: "comp_yilmaz_1",
+    name: "Yilmaz Grillpalast",
+    rivalName: "Tarek Yilmaz",
+    industry: "imbiss",
+    locationId: "bahnhof",
+    marketSharePct: 35,
+    reputation: 28,
+  },
+  {
+    id: "comp_yilmaz_2",
+    name: "Metropol Kiez-Döner",
+    rivalName: "Tarek Yilmaz",
+    industry: "imbiss",
+    locationId: "kiez",
+    marketSharePct: 40,
+    reputation: 25,
+  },
+  {
+    id: "comp_lindner_1",
+    name: "Feinbäckerei Lindner",
+    rivalName: "Nora Lindner",
+    industry: "cafe",
+    locationId: "viertel",
+    marketSharePct: 45,
+    reputation: 34,
+  },
+  {
+    id: "comp_rossi_1",
+    name: "Caffè Rossi Spezialitäten",
+    rivalName: "Matteo Rossi",
+    industry: "cafe",
+    locationId: "zentrum",
+    marketSharePct: 50,
+    reputation: 52,
+  },
+  {
+    id: "comp_vance_1",
+    name: "Vance Design & Mode",
+    rivalName: "Clara Vance",
+    industry: "shop",
+    locationId: "mall",
+    marketSharePct: 48,
+    reputation: 68,
+  },
+];
+
+export interface CreditOfferDef {
+  id: "micro" | "classic" | "invest";
+  name: string;
+  subtitle: string;
+  annualRate: number;
+  maxAmount: number;
+  minReputation: number;
+  minNetWorth?: number;
+  blurb: string;
+  badge: string;
+}
+
+export const CREDIT_OFFERS: CreditOfferDef[] = [
+  {
+    id: "micro",
+    name: "Schneller Betriebsmittel-Kredit",
+    subtitle: "Kurzfristige Liquidität ohne Bonitätsprüfung",
+    annualRate: 0.115,
+    maxAmount: 3_000,
+    minReputation: 0,
+    blurb: "Sofortige Bereitstellung für Wareneinkauf oder dringende Rechnungen.",
+    badge: "Sofort verfügbar",
+  },
+  {
+    id: "classic",
+    name: "Klassischer Unternehmerkredit",
+    subtitle: "Günstiges Geschäftsdarlehen für Wachstum & Ausbauten",
+    annualRate: 0.078,
+    maxAmount: 15_000,
+    minReputation: 15,
+    blurb: "Solide Wachstumsfinanzierung für Personal, Stufen-Upgrades und Werbekampagnen.",
+    badge: "Ab 15 Ruf",
+  },
+  {
+    id: "invest",
+    name: "Großinvestitions-Darlehen",
+    subtitle: "Zinsgünstiges Investitionskapital für Expansion & Immobilien",
+    annualRate: 0.054,
+    maxAmount: 85_000,
+    minReputation: 25,
+    minNetWorth: 50_000,
+    blurb: "Niedrigzins-Finanzierung für Immobilien, Filialketten und langfristige Vermögenswerte.",
+    badge: "Ab 25 Ruf",
+  },
+];
 export const YEAR_LENGTH_DAYS = 360;
 export const EARLY_YEAR_MIN_GROWTH = 0.1;
 export const YEAR1_NET_WORTH_BASE = 25_000;
@@ -67,7 +198,7 @@ export const INDUSTRIES: IndustryDef[] = [
     minNetWorth: 0,
     licenseFee: 1_000,
     foundingFee: 5_000,
-    baseRent: 0,
+    baseRent: 20,
     avgTicket: "3–8 €",
     estDailyRevenue: "400–1.200 €",
   },
@@ -1295,7 +1426,7 @@ export function productById(id: string): ProductDef {
 
 export function supplierById(id: string): SupplierDef {
   const s = SUPPLIERS.find((x) => x.id === id);
-  if (!s) throw new Error(`Unknown supplier ${id}`);
+  if (!s) return SUPPLIERS[1]; // Fallback zu Standard "mittel"
   return s;
 }
 

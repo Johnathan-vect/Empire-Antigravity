@@ -219,3 +219,152 @@
   - Knappe Firmenkasse simuliert (nur ~30 € vorhanden).
   - Cash-aware Skalierung verifiziert: Es wurden 26 Einheiten (leistbares Maximum $\ge$ 15 Mindestmenge) bestellt, anstatt mit Kassenfehler abzubrechen.
 
+
+
+---
+
+## [22.10.2026] — Sprint 3.2: Dynamisches Balancing, Schieberegler & Mobile-Harmonisierung (Abgeschlossen)
+**Bearbeiter:** Antigravity (Koordinator) & Sub-Agenten-Team  
+**Ziel:** Umsetzung der genehmigten Sub-Agent-Lösungsvorschläge (faires Lieferanten-Bailout, Startkapital-Slider, Bahnhofs-Miete, Notification-Dots und Mobile-Quick-Actions).
+
+### 1. Durchgeführte Arbeiten & Code-Änderungen
+1. **Wirtschafts-Balancing & Katalog (`src/game/catalog.ts` & `src/game/sim.ts`):**
+   - `catalog.ts`: `baseRent` für Imbiss auf 20 € gesetzt. Kiez bleibt dank `rentMult: 0` komplett kostenlos, während der Hauptbahnhof faire 36–40 €/Tag Miete kostet (ökonomisches Risiko vs. Ertrag hergestellt).
+   - `sim.ts`: Lieferanten-Rückkaufpreis auf faire, motivierende **450 €** beim Imbiss (Café 1.050 €, Shop 2.600 €) feinjustiert.
+   - `sim.ts`: Bei Rückkauf startet der Lieferant im Status „Gekränkt“ mit 40 % Zufriedenheit und 60 % Liefermenge (echter Rehabilitations-Lerneffekt statt schmerzloses Freikaufen).
+2. **UI & Onboarding-Ergonomie (`src/components/empire/FoundingFlow.tsx`):**
+   - Schritt 3 um einen flexiblen Schieberegler für das Start-Umlaufvermögen (500 € bis 3.000 €, Standard 1.200 €) erweitert.
+   - Dynamische Liquiditäts-Ampel integriert (`< 800 €` Rot, `800–1.500 €` Akzent/Gelb, `> 1.500 €` Grün).
+3. **UI-Korrekturen & Mobile-Ergonomie (`src/components/empire/CompanyDetail.tsx`):**
+   - Zeile 396: Hardcodiertes `"0 € (Kiez)"` entfernt und durch dynamischen Standort-Chip `{locDef.name}` mit realer Miete ersetzt.
+   - Sub-Navigation: Dezente gelbe Notification-Punkte (`bg-warn animate-pulse`) an Tabs angebracht, wenn Handlungsbedarf vorliegt (z. B. leeres Lager oder Hygiene < 60 %).
+   - Mobile Daumenzone: Fixierte Schnellaktions-Leiste (`fixed bottom-16 inset-x-3`) für 1-Tap-Reinigung und Sortimentsprüfung eingebaut.
+
+### 2. Verifikation & Tests
+- `npm.cmd run typecheck`: **0 Fehler (sauberer Durchlauf)**.
+- Standalone Production-Build (`npx.cmd vite build`): **Erfolgreich (Exit-Code 0)**.
+- Playtest-Harness: Neue Screenshots für Slider, Mieten und Tabs fehlerfrei generiert.
+
+---
+
+## [22.10.2026] — Sprint 3.3: Grand Agent Playthrough & Spieldynamik-Roadmap (Abgeschlossen)
+**Bearbeiter:** Antigravity (Koordinator) & Sub-Agenten (`persona-anno-economist`, `persona-lazy-mobile`, `persona-design-purist`)  
+**Ziel:** Vollständiger E2E-Playthrough-Run über alle Entwicklungsstufen (Gründung bis Rich-List-Endgame) mit visueller Beweisaufnahme, 360-Tage-Audit und Erarbeitung einer dynamischen Gameplay-Roadmap.
+
+### 1. Durchgeführte Arbeiten & Simulationsergebnisse
+1. **E2E-Playtest-Harness (`scripts/qa/full_playthrough_run.mjs`):**
+   - 15 hochauflösende Screenshots in `docs/agent_system/screenshots/full_run/` generiert.
+   - Gründungs-Slider (1.200 €), Produktbelegung, Zeitraffer (5×) und mobile Ergonomie (390×844) automatisiert getestet.
+   - Telemetrie in `docs/agent_system/scratchpad/full_playthrough_telemetry.json` abgelegt.
+2. **360-Tage-Progression-Audit (`scripts/qa/full_year_sim_audit.ts`):**
+   - 1 volles Geschäftsjahr (360 Spieltage) simuliert.
+   - End-Vermögen: 134.595 € NetWorth (von 20.000 € Startkapital); Bahnhofs-Grill erwirtschaftet 191.384 € Umsatz und 115.917 € Gewinn.
+   - Resilienz-Fix in `src/game/catalog.ts`: `supplierById` mit robustem Fallback auf Standardlieferanten gegen Crashs abgesichert.
+3. **Zentraler Befund der Sub-Agents:**
+   - Ungestörtes lineares Wachstum ohne Schocks belegt die dringende Notwendigkeit dynamischer Reibung.
+   - Gewinne akkumulieren im Betrieb (115.637 €), während persönliches Bargeld (18.800 €) ohne Dividendenüberweisung die Expansion hemmt.
+
+### 2. Eingebrachte Dynamik- & Feature-Vorschläge der Sub-Agents (`docs/agent_system/BUS.md`)
+- **`persona-anno-economist`:**
+  - *Makroökonomie:* Fluktuierender EZB-Leitzins (4–14 % p.a.) und unvorhersehbare Rohstoffkrisen (+20–40 % Einkaufspreise).
+  - *Betriebliche Krisen:* Grippewellen (−50 % Mitarbeiterkapazität) und Streik-Ultimaten bei Niedriglöhnen.
+  - *Marktmacht & Konkurrenz:* Großfilialen verknappen Personal im Stadtteil; Großkonzerne starten Preiskämpfe; Monopolprüfungen bei Dominanz.
+- **`persona-lazy-mobile`:**
+  - *1-Tap-Gewinnüberweisung:* Direkter Daumen-Button zum Abschöpfen von Firmenüberschüssen ins Privatkonto.
+  - *Quick-Event-Karten:* Gestapelte Daumen-Aktionskarten zur schnellen Schlichtung von Krisen.
+  - *Manager-Automatisierung:* Selbstständige Routine-Reinigung & Bestellausführung für Großketten.
+- **`persona-design-purist`:**
+  - *Makro-Ticker (Head-Bar):* Einzeilige, dezente Statuszeile unter dem Datum mit 3 Pills (Zins, Inflation, Zyklus) und Drawer-Sheet.
+  - *Krisen-Banner mit Micro-CTA:* Flache, gestapelte `warn`-Banner mit Countdown und Inline-Schlichtungsbutton („Schlichten (500 €)“).
+  - *Prestige-Rangfortschritt (Next-Rival Gauge):* Feiner 3px-Gradientbalken über der Rich-List zur Visualisierung des Abstands zum nächsten Milliardär.
+
+### 3. Qualitätsgates & Build-Status
+- `npm.cmd run typecheck`: **0 Fehler (sauberer Durchlauf)**.
+- Standalone Production-Build (`npx.cmd vite build`): **Erfolgreich (Exit-Code 0)**.
+
+---
+
+## [22.10.2026] — Sprint 4: Komplett-Spieler-Playthrough (Tag 1 bis 23) & Gameplay-Analyse (Abgeschlossen)
+**Bearbeiter:** Antigravity (Pair Programming mit Benutzer)  
+**Ziel:** Simulation eines echten Spielers von Tag 1 (25.000 € Startkapital) bis zum Tycoon-Endgame mit Multi-Company (3 Branchen), Aktien, Krypto, Immobilien und Sammlungen; visuelle Beweisaufnahme und Identifikation von Gameplay-Flaschenhälsen für den Folgeplan.
+
+### 1. Durchgeführte Arbeiten & Simulationsschritte
+1. **End-to-End Playthrough-Harness entwickelt (`scripts/qa/full_playthrough.mjs`):**
+   - 13 chronologische Meilenstein-Screenshots generiert und sowohl in `docs/agent_system/screenshots/playthrough/` als auch im Artifact-Ordner abgelegt:
+     1. `01_start_dashboard.png`: Tag 1 Start mit 25.000 € Liquidität.
+     2. `02_founding_dialog.png`: Gründungsassistent Schritt 1.
+     3. `03_company_overview_empty.png`: Imbiss-Detailansicht mit Hygiene-Duo.
+     4. `04_team_hygiene_set.png`: Mitarbeiter eingestellt & Grundreinigung.
+     5. `05_day7_performance.png`: Tag 7 Kundenströme, GuV & Besucherdiagramm.
+     6. `06_level2_second_product.png`: Stufe 2 erreicht, 2. Produkt Pommes aktiv.
+     7. `07_auto_order_manager_active.png`: Stufe 3, Betriebsleiter & Auto-Order aktiv.
+     8. `08_finance_loan_taken.png`: Kreditkonditionen & 500 € Sondertilgung.
+     9. `09_stock_crypto_portfolio.png`: Aktiendepot mit Dividendentitel & Krypto.
+     10. `10_multi_company_overview.png`: Imbiss-Kette & Café synchron.
+     11. `11_retail_trendshop_added.png`: 3. Branche (Trendshop Mall) gegründet.
+     12. `12_real_estate_luxury.png`: Eigentumswohnung Kreuzberg & Kunstsammlung.
+     13. `13_endgame_richlist.png`: Endgame-Dashboard, Rangliste & passiver Cashflow.
+2. **Endgame-Ergebnis nach 23 Spieltagen:**
+   - 3 Betriebe aktiv: *Bahnhof Döner & Curry* (Kette), *Café Antigravity*, *Trendshop Neo Lifestyle*.
+   - Schuldenstand: 0,00 € (vollständig getilgt).
+   - Auto-Order Prüfung: Pommes auf Stufe 3 hielten dauerhaft über 73 Stk. Bestand ohne Leerlauf.
+3. **Aufgedeckte Gameplay-Flaschenhälse:**
+   - *Multi-Company Micromanagement:* Neue Betriebe starten auf Stufe 1, Manager und Auto-Order sind erst ab Stufe 3 verfügbar -> extremer manueller Klickaufwand bei Folgegründungen.
+   - *Hygiene-Klickfalle:* Kein täglicher automatischer Reinigungsabzug via `hygieneBudget` -> tägliche manuelle Klicks nötig.
+   - *Kreditmarkt Einbahnstraße:* Im Screen Finanzen können Kredite nur getilgt, aber nicht aktiv bei der Bank aufgenommen werden.
+   - *Lieferanten-Cap:* Bestellungen über `maxOrderQty` scheitern per Fehlerabbruch statt automatischer Deckelung.
+
+### 2. Verifikation & Qualitätssicherung
+- `npm.cmd run typecheck`: **0 Fehler (sauberer Durchlauf)**.
+- Umfassender Bericht als interaktives Markdown-Artefakt bereitgestellt: `full_playthrough_report.md`.
+
+---
+
+## [22.10.2026] — Sprint 5: Manager-Hygiene-Automatisierung, Flexibler Kreditmarkt & Lieferanten-Clamping (Abgeschlossen)
+**Bearbeiter:** Antigravity (Pair Programming mit Benutzer)  
+**Ziel:** Beseitigung der im Full-Playthrough identifizierten Reibungspunkte: Automatisierung der Betriebsreinigung durch den Manager, flexibler Bankkreditmarkt mit Zinsstaffeln und Kreditauszahlung (Privat/Firma), automatisches Deckeln von Lieferantenbestellungen und Wahrung der rechtlichen Unternehmenstrennung.
+
+### 1. Durchgeführte Arbeiten & Code-Änderungen
+1. **Manager-Hygiene-Automatisierung (24/7):**
+   - [`src/game/sim.ts`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/game/sim.ts):
+     - In `runHour` stündliche Manager-Routine integriert: Wenn `c.manager` aktiv ist und `c.hygiene < 80` sinkt, beauftragt der Manager bei vorhandener Liquidität (`c.cash >= CLEANING_COST = 40 €`) automatisch eine Reinigung.
+     - Stellt +22 % Hygiene (bis max. 100 %) wieder her und führt Buchung im Hauptbuch (`category: "maintenance"`) durch. Läuft rund um die Uhr, sodass Betriebe auch morgens vor 8:00 Uhr sauber öffnen.
+   - [`src/components/empire/CompanyDetail.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/CompanyDetail.tsx):
+     - Hygiene-Karte zeigt bei aktivem Manager ein grünes Badge: `Manager reinigt automatisch (≥ 80 %)`.
+     - Manager-Karte im Reiter „Ausbau & Team“ dokumentiert den Aufgabenbereich präzise: „Führt Auto-Order aus und beauftragt automatisch Reinigungen (Hygiene ≥ 80 %).“
+
+2. **Flexibler Kreditmarkt & Aktive Darlehensaufnahme:**
+   - [`src/game/catalog.ts`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/game/catalog.ts) & [`src/game/types.ts`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/game/types.ts):
+     - `CREDIT_OFFERS` mit 3 Kreditstaffeln definiert:
+       1. *Schneller Betriebsmittel-Kredit*: 11,5 % p.a., max. 3.000 €, sofort ab Tag 1 verfügbar.
+       2. *Klassischer Unternehmerkredit*: 7,8 % p.a., max. 15.000 €, ab Ruf ≥ 15.
+       3. *Großinvestitions-Darlehen*: 5,4 % p.a., max. 85.000 €, ab Ruf ≥ 25 und Gesamtvermögen ≥ 50.000 €.
+     - `LoanCategory` und optionale `label`-Property für Kredite eingeführt.
+   - [`src/game/sim.ts`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/game/sim.ts) & [`src/game/store.ts`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/game/store.ts):
+     - `tryBorrowLoan(state, { offerId, amount, companyId })`: Prüft Voraussetzungen, verfügbaren Rahmen (`creditLimit - usedCredit`), deckelt auf Maximalbetrag und generiert Krediteintrag.
+     - Store-Aktion `borrowLoan(offerId, amount, companyId)`: Bucht Geld direkt in `c.cash` (und synchronisiert `company.debt` via `syncCompanyDebt`) oder in `st.cash` (Privat).
+   - [`src/components/empire/FinanceScreen.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/FinanceScreen.tsx):
+     - Vollwertiger Darlehensaufnahme-Dialog mit Kreditauswahlkarten, Betragsslider, Schnellwahltasten (1.000 €, 2.500 €, Max), Empfänger-Umschalter (Privatkonto vs. Betriebskasse) und Live-Zinsrechner (Zinsen pro Tag und Jahr).
+     - Kreditstatus-Übersicht mit Gesamtschulden, verfügbarem Kreditrahmen und Auslastungsbalken.
+
+3. **Lieferanten-Lieferkapazität Deckelung (Clamping):**
+   - [`src/game/sim.ts`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/game/sim.ts):
+     - In `placeProductOrder` führt ein Überschreiten von `supplier.maxOrderQty` nicht mehr zum Fehlerabbruch, sondern kappt die Menge auf `maxQty` und liefert `clampedFrom: requestedQty` im `OrderOutcome` zurück.
+   - [`src/components/empire/CompanyDetail.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/CompanyDetail.tsx):
+     - Bestellmodal deckelt das Eingabefeld dynamisch mit `max={supplier.maxOrderQty}` und zeigt bei automatischer Deckelung einen erklärenden Sonner-Toast an.
+
+4. **Rechtliche Unternehmenstrennung (Realismus-Grundsatz):**
+   - Auf unrealistische Direkttransfers von Firma zu Firma wurde bewusst verzichtet.
+   - Geldflüsse zwischen Unternehmen bleiben an den Gesellschafter gekoppelt (Privatentnahme -> Privateinlage), um die steuerliche und juristische Realität getrennter Kapital-/Personengesellschaften abzubilden.
+   - Konzeptionelle Vorbereitung für zukünftige Holding-Strukturen und formelle Gesellschafterdarlehen mit Zins- und Tilgungsplänen.
+
+### 2. Verifikation & Qualitätssicherung
+- `npm.cmd run typecheck`: **0 Fehler (sauberer Durchlauf)**.
+- Automatisierte QA-Testsuite (`scripts/qa/sprint5_verification.mjs`):
+  - Test 1 (Manager-Hygiene): Verifiziert, dass ein Betrieb bei Hygiene 65 % automatisch auf 87 % gereinigt wird und 40 € abgebucht werden.
+  - Test 2 (Kreditaufnahme): Verifiziert die Aufnahme von 3.000 € Betriebsmittelkredit direkt in die Betriebskasse mit synchroner Aktualisierung von `company.debt` und Gesamtschulden.
+  - Test 3 (Lieferanten-Clamping): Verifiziert, dass eine Bestellung von 120 Einheiten beim Kiez-Lieferanten (Cap 55) sauber auf 55 Stück gekappt und geliefert wird.
+  - Screenshots erstellt: `sprint5_01_credit_tiers_open.png`, `sprint5_02_credit_active_list.png`, `sprint5_03_manager_hygiene_badge.png`, `sprint5_04_manager_hygiene_restored.png`.
+
+
+

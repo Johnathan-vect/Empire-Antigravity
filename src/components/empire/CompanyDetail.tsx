@@ -164,6 +164,13 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
     (p) => p.autoOrder && p.contractedSupplier,
   ).length;
 
+  const tabDotWarnings: Record<string, boolean> = {
+    overview: c.hygiene < 60,
+    products: c.products.some((p) => p.enabled && (!p.contractedSupplier || p.stock === 0)),
+    team: canUpgrade,
+    money: c.cash < Math.max(150, dailyFixedCosts * 2),
+  };
+
   const compDemand = getCompanyDemandInfo(s, c);
   const indDemand = getIndustryDemandInfo(s, c.industry ?? "imbiss");
 
@@ -337,19 +344,25 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
               ["team", "Ausbau & Team"],
               ["money", "Kasse"],
             ] as const
-          ).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setTab(id)}
-              className={cn(
-                "h-8 sm:h-9 rounded-lg px-1 font-medium transition-colors duration-150 text-center truncate",
-                tab === id ? "bg-surface text-fg shadow-sm" : "text-muted hover:text-fg",
-              )}
-            >
-              {label}
-            </button>
-          ))}
+          ).map(([id, label]) => {
+            const hasDot = tabDotWarnings[id];
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setTab(id)}
+                className={cn(
+                  "relative h-8 sm:h-9 rounded-lg px-1 font-medium transition-colors duration-150 text-center truncate flex items-center justify-center gap-1",
+                  tab === id ? "bg-surface text-fg shadow-sm" : "text-muted hover:text-fg",
+                )}
+              >
+                <span className="truncate">{label}</span>
+                {hasDot ? (
+                  <span className="size-1.5 sm:size-2 rounded-full bg-warn animate-pulse shrink-0" />
+                ) : null}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -394,7 +407,10 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
               </div>
               <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs tabular">
                 <span className="text-muted">
-                  Miete: <b className="text-fg">{c.rentPerDay === 0 ? "0 € (Kiez)" : money(c.rentPerDay)}</b> / Tag
+                  Miete ({locDef.name}):{" "}
+                  <b className={cn("text-fg", dailyRent > 0 && "text-warn font-semibold")}>
+                    {dailyRent === 0 ? "0 € (Kostenfrei)" : `${money(dailyRent)} / Tag`}
+                  </b>
                 </span>
                 <span className="text-gain font-medium">Frequenz {num1(locDef.freqMult)}×</span>
               </div>
@@ -428,7 +444,7 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
                 </div>
                 <p className="mt-1 text-[11px] text-muted leading-tight">
                   {c.manager
-                    ? "Manager hält die Sauberkeit automatisch im grünen Bereich."
+                    ? "Betriebsleiter reinigt automatisch, sobald Hygiene unter 80 % fällt (40 € Firmenkasse)."
                     : "Gute Hygiene steigert Gästezufriedenheit. Unter 25 drohen behördliche Kontrollen."}
                 </p>
               </div>
@@ -436,17 +452,18 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
               <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between gap-2">
                 <span className="text-[11px] text-muted">
                   {c.manager ? (
-                    <span className="text-gain flex items-center gap-1">
-                      <Check className="size-3" /> Auto-Reinigung aktiv
-                    </span>
+                    <Badge tone="gain" className="gap-1 py-0.5 text-[11px]">
+                      <ShieldCheck className="size-3" /> Manager reinigt automatisch (≥ 80 %)
+                    </Badge>
                   ) : (
-                    "Manuelle Reinigung"
+                    <span className="text-muted">Manuelle Reinigung</span>
                   )}
                 </span>
                 <Button
                   size="sm"
                   variant="secondary"
                   className="h-7 text-xs px-2.5"
+                  title={c.manager ? "Zusätzliche Sofortreinigung auf 100 %" : "Betrieb manuell reinigen"}
                   disabled={c.status !== "active" || c.cash < CLEANING_COST}
                   onClick={() => {
                     const err = s.cleanHygiene(c.id);
@@ -454,7 +471,7 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
                     else toast.success(`Betrieb gründlich gereinigt (+18 Hygiene).`);
                   }}
                 >
-                  Reinigen · {money(CLEANING_COST)}
+                  {c.manager ? `Sofort reinigen · ${money(CLEANING_COST)}` : `Reinigen · ${money(CLEANING_COST)}`}
                 </Button>
               </div>
             </div>
@@ -2402,6 +2419,11 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
                                         toast.error(out.err);
                                         return;
                                       }
+                                      if (out.clampedFrom) {
+                                        toast.info(
+                                          `Liefermenge automatisch auf Lieferanten-Maximum (${out.orderedQty} Stk.) angepasst.`,
+                                        );
+                                      }
                                       if (out.delayed) {
                                         const shortageNote =
                                           out.actualQty < out.orderedQty
@@ -3062,10 +3084,10 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
 
             {c.level >= 3 ? (
               <div className="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)]">
-                <span className="text-xs text-muted">
+                <span className="text-xs text-muted max-w-md">
                   {c.manager
-                    ? "Betriebsleiter leitet das Tagesgeschäft eigenständig."
-                    : "Noch kein Betriebsleiter engagiert."}
+                    ? "Betriebsleiter leitet das Tagesgeschäft: Führt Auto-Order aus und beauftragt automatisch Reinigungen (Hygiene ≥ 80 %)."
+                    : "Noch kein Betriebsleiter engagiert. Führt Auto-Order aus und hält Hygiene automatisch über 80 %."}
                 </span>
                 <Button
                   size="sm"
@@ -3377,6 +3399,39 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
             <div className="rounded-xl bg-surface p-4 text-center text-sm text-muted shadow-[var(--shadow-border)]">
               Keine offenen Firmenschulden vorhanden.
             </div>
+          ) : null}
+        </div>
+      ) : null}
+
+      {/* Mobile Sticky Quick-Action Floater (Daumenzone) */}
+      {c.status === "active" && (c.hygiene < 60 || tabDotWarnings.products) ? (
+        <div className="fixed bottom-16 inset-x-3 z-20 sm:hidden flex items-center justify-between gap-2 rounded-xl bg-surface/95 border border-[var(--border-subtle)] p-2 shadow-lg backdrop-blur-md">
+          {c.hygiene < 60 ? (
+            <Button
+              size="sm"
+              variant="secondary"
+              className="flex-1 h-8 text-xs font-semibold gap-1.5 border-warn/40 text-warn hover:bg-warn/10"
+              disabled={c.cash < CLEANING_COST}
+              onClick={() => {
+                const err = s.cleanHygiene(c.id);
+                if (err) toast.error(err);
+                else toast.success(`Betrieb blitzblank gereinigt (+18 Hygiene).`);
+              }}
+            >
+              <Sparkles className="size-3.5" />
+              <span>Reinigen (-{money(CLEANING_COST)})</span>
+            </Button>
+          ) : null}
+
+          {tabDotWarnings.products && tab !== "products" ? (
+            <Button
+              size="sm"
+              className="flex-1 h-8 text-xs font-semibold gap-1.5"
+              onClick={() => setTab("products")}
+            >
+              <Package className="size-3.5" />
+              <span>Sortiment / Ware</span>
+            </Button>
           ) : null}
         </div>
       ) : null}

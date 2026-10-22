@@ -76,6 +76,45 @@
      $\text{Meldebestand} = \text{Lead Time Demand} + \text{Sicherheitsbestand}$.
   2. Bei knapper Kasse wird die Bestellmenge anteilig auf die maximal bezahlbare Stückzahl (`Math.floor(cash / unitCost)`) heruntergerechnet (bis `minOrderQty`), anstatt den Nachkauf komplett scheitern zu lassen.
 
+### 1.14 Zustand Store Snapshot Immutability in Skripten & Tests
+- **Fehler:** Aufruf von `const st = window.__EMPIRE_STORE__.getState()`, gefolgt von einer Aktion `st.foundCompany(...)` und anschließendem Lesezugriff auf `st.companies` liest noch den alten Zustand aus, in dem die Firma fehlt.
+- **Ursache:** Zustand ersetzt bei `set(...)` den gesamten State-Objektbaum immutabel durch ein neues Objekt. Das zuvor gespeicherte `st` referenziert den veralteten Snapshot.
+- **Verbindliche Regel:** Nach jeder Store-Aktion immer erneut `const fresh = window.__EMPIRE_STORE__.getState()` aufrufen, um den aktuellen Zustandsbaum zu erhalten.
+
+### 1.15 Store Action Methodensignaturen & Namenskonventionen
+- **Fehler:** Aufrufe von `placeOrder`, `hireManager`, `repayLoan` oder vertauschten Argumenten (`foundCompany(industry, location, ...)` bzw. `hireEmployee(appId, companyId)`) schlagen zur Laufzeit fehl.
+- **Verbindliche Regel:** Exakte Signaturen in `src/game/store.ts` beachten:
+  1. `foundCompany: (name: string, industry: Industry, locationId: LocationId, equity: number, extra: number, scale?: CompanyScaleId)`
+  2. `orderStock: (companyId: string, productId: string, qty: number) => OrderOutcome`
+  3. `hireEmployee: (companyId: string, applicantId: string) => string | null`
+  4. `toggleManager: (companyId: string) => string | null` (kein `hireManager`/`fireManager`)
+  5. `extraPayment: (loanId: string, amount: number) => string | null` (kein `repayLoan`)
+  6. `openCompany: (companyId: string | null) => void` (Schließen durch Übergabe von `null`)
+
+### 1.16 Gründungsfinanzierung & Kreditlimit-Obergrenze
+- **Fehler:** Beim Gründen höherwertiger Branchen (z.B. Einzelhandel mit 32.000 € Gründungsgebühr) mit zu geringem Eigenkapital (z.B. 18.000 €) entsteht ein Kreditbedarf von 14.000 €. Zusammen mit bestehenden Vorbelastungen übersteigt dies das Start-Kreditlimit (15.000 €) und bricht mit *"Kreditlimit überschritten"* ab.
+- **Verbindliche Regel:** Bei Gründungsassistenten und Testläufen muss das Eigenkapital so dimensioniert sein, dass `fee - equity <= availableCredit` gilt. Bei Einzelhandel empfiehlt sich mindestens 25.000–32.000 € Eigenkapital.
+
+### 1.17 Lieferanten-Lieferkapazität (`maxOrderQty`)
+- **Fehler:** Bestellungen oberhalb von `supplier.maxOrderQty` (z.B. 80 Stk. bei einem Cap von 55 Stk.) schlagen mit einem Fehlerabbruch fehl.
+- **Verbindliche Regel:** Bestellungen im UI und in der Logik immer auf `Math.min(requestedQty, supplier.maxOrderQty)` deckeln und dem Spieler visuelles Feedback zur Obergrenze geben (`clampedFrom` in `OrderOutcome`).
+
+### 1.18 Manager 24/7 Hygiene-Steuerung & Zeitfenster
+- **Fehler:** Tägliche manuelle Reinigungen für mehrere Betriebe führten zu Mikromanagement-Frust. Wird die Manager-Hygiene nur während der Öffnungszeiten (8–22 Uhr) ausgeführt, können Betriebe morgens mit schlechter Hygiene eröffnen.
+- **Verbindliche Regel:** Die automatische Reinigung durch den Manager (`c.manager && c.hygiene < 80`) wird in `runHour` stündlich rund um die Uhr geprüft. Sie bucht 40 € aus der Firmenkasse ab und stellt +22 % Hygiene (bis max. 100 %) wieder her. So starten Betriebe auch morgens stets sauber in den Tag.
+
+### 1.19 Flexibler Kreditmarkt mit Zinsstufen & Zweckbindung
+- **Fehler:** Kredite konnten im Finanz-Screen nur passiv getilgt, aber nicht aktiv bei der Hausbank aufgenommen werden. Zudem hatten alle Kredite denselben pauschalen Zinssatz ohne Risiko-Differenzierung.
+- **Verbindliche Regel:** Kredite werden in 3 transparente Kategorien unterteilt:
+  1. *Schneller Betriebsmittel-Kredit* (11,5 % p.a., bis 3.000 €, sofort verfügbar)
+  2. *Klassischer Unternehmerkredit* (7,8 % p.a., bis 15.000 €, ab Ruf ≥ 15)
+  3. *Großinvestitions-Darlehen* (5,4 % p.a., bis 85.000 €, ab Ruf ≥ 25 & NetWorth ≥ 50.000 €)
+  Bei Firmenkrediten wird das Geld direkt der Firmenkasse gutgeschrieben und `company.debt` via `syncCompanyDebt` synchronisiert. Bei Privatkrediten fließt das Geld in `st.cash`.
+
+### 1.20 Reale Unternehmenstrennung (Legal Entity Invariant)
+- **Fehler:** Der Wunsch nach schnellem Geldtransfer zwischen zwei separaten Firmen verführt zu einem direkten „Transfer von Firma A nach Firma B“-Button. In der Realität sind dies jedoch getrennte juristische Personen.
+- **Verbindliche Regel:** Es gibt **keinen** direkten, unrealistischen Firmen-zu-Firmen-Direkttransfer ohne Buchhaltung. Geldtransfers laufen immer über den Inhaber (Privatentnahme `transfer(companyId, -amount)` -> Privateinlage `transfer(targetCompanyId, +amount)`) oder in Zukunft über formelle Gesellschafterdarlehen mit Zins- und Tilgungsvereinbarung.
+
 ---
 
 ## 🔒 2. Architektonische Invarianten (Nicht verletzen!)
@@ -85,10 +124,13 @@
    - Keine Spielzustände direkt in `window` oder Komponenten ablegen.
 2. **Erhalt der Backend-Infrastruktur:**
    - Dateipfade wie `src/lib/auth/`, `src/lib/db.ts`, `migrations/` und `server/` dürfen **nicht** gelöscht werden. Sie dienen als Vorbereitung für spätere Cloud-Spielstände und Benutzerkonten.
-3. **Simulations-Reihenfolge:**
+3. **Rechtliche Trennung von Unternehmen (Corporate Entity Integrity):**
+   - Jede gegründete Firma ist eine eigenständige juristische Einheit mit getrennter Kasse, eigenem Warenlager, eigenem Personal und eigener Verbindlichkeit.
+   - Kein magischer konzerninterner Quertransfer ohne steuerlich/rechtlich saubere Abwicklung (Einlage/Entnahme oder Gesellschafterdarlehen).
+4. **Simulations-Reihenfolge:**
    - Berechnungen (Zinsen, Verkäufe, Nachfrage, Mieten) gehören ausschließlich in funktionale Helfer in `src/game/sim.ts`.
    - Der Store (`src/game/store.ts`) führt die Zustandsmutationen aus und dispatched die UI-Updates.
-4. **Kompilierungs-Pflicht:**
+5. **Kompilierungs-Pflicht:**
    - Nach jeder Code-Änderung **muss** `npm.cmd run typecheck` ausgeführt werden. Ein Commit oder Meilenstein-Abschluss mit Compiler-Warnungen oder Fehlern ist unzulässig.
 
 ---
