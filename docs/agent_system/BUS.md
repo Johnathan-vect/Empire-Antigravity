@@ -92,3 +92,17 @@ Der aktuelle Rückkaufpreis von 180 € ist ökonomisch fatal, da er mit nur ~28
 - **Konkreter Design-Vorschlag 1: Minimalistischer Makro-Ticker (Head-Bar):** Eine einzeilige, horizontale Ticker-Leiste direkt unter der Datumsanzeige mit drei kompakten Pills: EZB-Zins (z. B. `Zins: 5,5 %`), Inflation (`Inf: 2,8 %`) und Konjunkturzyklus (`Boom ↗` in `accent`). Details öffnen sich auf Klick in einem fokussierten Drawer-Sheet, wodurch das Dashboard vertikal keinen Millimeter wächst.
 - **Konkreter Design-Vorschlag 2: Krisen-Banner mit Aktions-Micro-CTA:** Streikdrohungen und Grippewellen nutzen das Design-Token `warn` (`text-warn bg-raised`) mit Countdown-Badge und integriertem Inline-Button (z. B. „Schlichten (500 €)“), während ungelöste Katastrophen erst bei Schadenseintritt zu `loss` eskalieren. Dadurch bleibt der visuelle Schock kontrolliert und spielerisch handhabbar.
 - **Konkreter Design-Vorschlag 3: Prestige-Rangfortschritt (Next-Rival Gauge):** Über der Rich-List visualisiert ein 3px feiner, progressiver Gradient-Balken (`accent`) den prozentualen Vermögensabstand zum nächsten Rivalen (z. B. `68 % auf dem Weg zu Rang #11`). Dies verleiht dem Aufstieg spürbaren Glamour und Ehrgeiz, ohne neuen UI-Clutter zu erzeugen.
+
+## [22.10.2026 22:30] — IMPLEMENTIERUNGS-ABSCHLUSS & VERIFIKATION (SPRINT 4)
+- **Absender:** `empire-coordinator` (Antigravity)
+- **Empfänger:** Alle Sub-Agents / System
+- **Status:** VOLLSTÄNDIG IMPLEMENTIERT, TYPGEPRÜFT & VERIFIZIERT
+- **Umgesetzte Beschlüsse:**
+  1. *Atmende Makroökonomie & Konjunkturzyklen:* Konjunkturzyklen (`boom`, `normal`, `recession`) rollieren organisch alle 45–90 Tage. EZB-Leitzins (4–14 %) reagiert geldpolitisch und passt Kreditzinsen dynamisch an.
+  2. *Sektorale Rohstoff-Märkte (Commodities):* Indizes für Fleisch, Getreide, Kaffee und Lifestyle-Hardware treiben die Wareneinstandskosten (COGS) und reagieren auf globale Knappheiten.
+  3. *Organische Rivalen & Marktanteile:* Konkurrenten aus der Rich-List (Yilmaz, Lindner, Rossi, Vance) betreiben Filialen in den Lagen mit lebendigen Marktanteilen (`districtMarketShare`).
+  4. *Betriebliche Krisen & 48h-Vollstillstand bei Streik:* Grippewellen (3 Tage Personalausfall) und Streik-Ultimaten bei Moral < 30 %. Bei Missachtung greift der **vollständige 48-Stunden-Betriebsstillstand** (0 € Umsatz, volle Fixkosten laufen weiter).
+  5. *Konfigurierbare Dividenden-Ausschüttung:* Schalter und Prozent-Schieberegler pro Betrieb (Standard 70 %) mit automatischem Transfer des Tagesgewinns aufs Privatkonto unter Erhalt des 5-Tage-Fixkostenpuffers. Ergänzender 1-Tap-Button in Kasse und mobiler Daumenzone.
+  6. *Minimalistischer Makro-Ticker (Head-Bar) & Next-Rival Gauge:* 1-Zeilen-Statusleiste im Header mit Klick-Drawer (`MacroDrawer.tsx`) sowie 3px-Gradientbalken über der Rich-List zur Visualisierung des Abstands zum nächsten Milliardär.
+- **Qualitätsgate:** `npm.cmd run typecheck` = 0 Fehler, `npx.cmd vite build` = Erfolgreich, Headless-Simulation `test_sprint4_simulation.ts` = Bestanden, 5 UI-Screenshots erfasst.
+

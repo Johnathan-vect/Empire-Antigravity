@@ -571,6 +571,26 @@ export function Dashboard() {
           </button>
         </div>
 
+        {/* Next-Rival Prestige Gauge */}
+        {nextRival ? (
+          <div className="space-y-1 pt-0.5">
+            <div className="flex items-center justify-between text-[11px] text-muted">
+              <span>Prestige-Aufstieg zu #{playerRank - 1} ({nextRival.name})</span>
+              <span className="tabular font-medium text-accent">
+                {Math.min(99, Math.round((nw / nextRival.netWorth) * 100))} %
+              </span>
+            </div>
+            <div className="h-1.5 w-full rounded-full bg-raised overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-accent/60 via-accent to-accent-fg transition-all duration-500"
+                style={{
+                  width: `${Math.min(100, Math.max(4, Math.round((nw / nextRival.netWorth) * 100)))}%`,
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
+
         <ul className="space-y-1.5">
           {combinedRichList
             .map((entry, idx) => ({ ...entry, displayRank: idx + 1 }))

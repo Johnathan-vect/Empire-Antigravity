@@ -32,6 +32,8 @@ import { Dashboard } from "./Dashboard";
 import { EventModal } from "./EventModal";
 import { FinanceScreen } from "./FinanceScreen";
 import { InsolvencyScreen } from "./InsolvencyScreen";
+import { MacroTicker } from "./MacroTicker";
+import { MacroDrawer } from "./MacroDrawer";
 import { OfflineReport } from "./OfflineReport";
 import { SettingsSheet } from "./SettingsSheet";
 import { StockScreen } from "./StockScreen";
@@ -493,6 +495,9 @@ export function AppShell() {
                 </button>
               </div>
             ) : null}
+
+            {/* Row 3: Minimalistischer Makro-Ticker (Head-Bar) */}
+            <MacroTicker />
           </header>
 
           {/* Scrollable Main Content Area */}
@@ -696,6 +701,7 @@ export function AppShell() {
       <OfflineReport />
       <YearEndModal />
       {pending ? <EventModal /> : null}
+      <MacroDrawer />
       <SettingsSheet />
       {typeof document !== "undefined"
         ? createPortal(

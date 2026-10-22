@@ -366,5 +366,46 @@
   - Test 3 (Lieferanten-Clamping): Verifiziert, dass eine Bestellung von 120 Einheiten beim Kiez-Lieferanten (Cap 55) sauber auf 55 Stück gekappt und geliefert wird.
   - Screenshots erstellt: `sprint5_01_credit_tiers_open.png`, `sprint5_02_credit_active_list.png`, `sprint5_03_manager_hygiene_badge.png`, `sprint5_04_manager_hygiene_restored.png`.
 
+---
+
+## [22.10.2026] — Sprint 4 (Evolution): Dynamische Makroökonomie, Hintergrund-Wirtschaft & Krisen (Abgeschlossen)
+**Bearbeiter:** Antigravity (Koordinator) & Sub-Agenten-Netzwerk  
+**Ziel:** Implementierung einer atmenden Hintergrund-Wirtschaft mit Konjunkturzyklen, EZB-Zinsanpassungen, sektoralen Rohstoffmärkten, organischen Konkurrenten, 48h-Streikstillstand, konfigurierbaren Dividenden und Next-Rival-Prestige-Gauge.
+
+### 1. Durchgeführte Arbeiten & Code-Änderungen
+1. **Core-Types & Katalog (`src/game/types.ts` & `src/game/catalog.ts`):**
+   - `MacroState` & `MacroCycle` (`boom` | `normal` | `recession`) definiert mit Zinsen (4–14 %) und Inflation.
+   - Sektorale Rohstoffmärkte (`meat`, `grain`, `coffeeBeans`, `hardware`) mit Zuordnung zu Endprodukten via `PRODUCT_COMMODITY_MAP`.
+   - Organische Rivalen (`DEFAULT_DISTRICT_COMPETITORS`) mit lebendigen Marktanteilen (`districtMarketShare`).
+   - `Company` um `autoDividend`, `dividendPct` (Standard 70 %) und `strikeActiveUntil` erweitert.
+2. **Simulation & Wirtschafts-Engine (`src/game/sim.ts`):**
+   - `tickMacroEconomy`: Rollierende Konjunkturzyklen alle 45–90 Tage; EZB-Leitzinsanpassungen wirken direkt auf Kredite; Rohstoffindizes treiben `offeringUnitCost`.
+   - `operateHour`: Streikschutz aktiviert – bei aktivem Streik (`strikeActiveUntil`) herrscht **vollständiger 48h-Betriebsausfall (0 € Umsatz)** bei weiterlaufenden Fixkosten.
+   - `endOfDay`: Automatische Dividenden-Ausschüttung des Tagesgewinns aufs Privatkonto unter Erhalt des 5-Tage-Fixkostenpuffers.
+   - Hilfsfunktion `tryWithdrawCompanyDividend` für manuellen 1-Tap-Transfer exportiert.
+3. **Betriebliche Krisen-Events (`src/game/events.ts`):**
+   - `fluWave`: Saisonaler Personalausfall (3 Tage Krankschreibung) mit Notdienst-Springer-Option (250 €).
+   - `strikeUltimatum`: Ultimatum bei Mitarbeitermoral < 30 % mit Schlichtungsoptionen (350 € Prämie oder +5 €/Tag Lohn) vs. 48h-Totalstillstand bei Missachtung.
+   - `commodityCrisis`: Rohstoff-Preisschocks (+30 % auf Fleisch & Getreide).
+4. **UI-Komponenten & Präsentation:**
+   - [`src/components/empire/MacroTicker.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/MacroTicker.tsx): Minimalistische 1-Zeilen-Kopfzeile unter der Uhr mit interaktiven Pills.
+   - [`src/components/empire/MacroDrawer.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/MacroDrawer.tsx): Detailreiches Zentralbank- und Rohstoff-Sheet.
+   - [`src/components/empire/AppShell.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/AppShell.tsx): Integration des Makro-Tickers und Drawers.
+   - [`src/components/empire/CompanyDetail.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/CompanyDetail.tsx): Streik-Banner, Dividenden-Panel mit Switch & Slider sowie 1-Tap-Button.
+   - [`src/components/empire/Dashboard.tsx`](file:///c:/Users/Ja201/Desktop/Empire%20AIstudio/src/components/empire/Dashboard.tsx): Next-Rival Prestige Gauge über der Rich-List.
+
+### 2. Verifikation & Qualitätssicherung
+- `npm.cmd run typecheck`: **0 Fehler (sauberer Durchlauf)**.
+- `npx.cmd vite build`: **Erfolgreich (Exit-Code 0)**.
+- Headless-Simulation (`scripts/qa/test_sprint4_simulation.ts`):
+  - Rohstoffschock (+35 % Fleisch, 5 % Inf) treibt Hotdog-Stückkosten von 1,23 € auf 1,70 € verifiziert.
+  - Konjunkturzyklus-Wechsel (EZB-Zins, Inflation, Trendlabel) verifiziert.
+  - 48h-Streikstillstand (exakt 0 € Umsatz während Streik) verifiziert.
+  - Automatische Dividenden-Ausschüttung aufs Privatkonto unter Erhalt des Puffers verifiziert.
+  - 1-Tap-Gewinnüberweisung verifiziert.
+- Browser-Verifikation (`scripts/qa/verify_sprint4_ui.mjs` & `scratch/capture_company_detail.mjs`):
+  - 5 hochauflösende Screenshots in `docs/agent_system/screenshots/sprint4/` erfasst.
+
+
 
 

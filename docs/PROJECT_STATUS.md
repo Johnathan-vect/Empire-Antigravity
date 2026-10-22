@@ -55,4 +55,12 @@ Empire ist eine deutsche Wirtschaftssimulation. Der Spieler startet als Privatpe
   - [x] Interaktiver Kreditaufnahme-Dialog im Finanz-Screen mit Kreditauswahl, Slider, Schnellwahltasten und Verwendungszweck (Privat / Firma)
   - [x] Lieferanten-Bestellobergrenze (Clamping): Automatische Kappung auf `maxOrderQty` statt Abbruch mit Fehlerhinweis
   - [x] Wahrung der legalen Unternehmenstrennung: Verzicht auf unrealistische Quertransfers; Dokumentation realistischer Holding-/Darlehenskonzepte
-- [ ] **Nächster Schritt:** Weiterer Ausbau der Holding- & Konzernmechaniken (Gesellschafterdarlehen mit Zinsen, Holding-Cash-Pooling, Dividenden-Politik)
+- [x] **Sprint 6 (Evolution): Dynamische Makroökonomie, Hintergrund-Wirtschaft & Dividenden-Politik (Erledigt):**
+  - [x] Konjunkturzyklen (`boom`, `normal`, `recession`) rollieren alle 45–90 Tage mit variierenden EZB-Leitzinsen und Inflationsraten
+  - [x] Sektorale Rohstoffmärkte (Fleisch, Getreide, Kaffee, Hardware) beeinflussen dynamisch die Einkaufspreise
+  - [x] Organische Rivalen aus der Rich-List mit dynamischen Marktanteilen in den Bezirken
+  - [x] Betriebskrisen: Grippewelle und Streik-Ultimatum mit 48h-Vollstillstand bei Missachtung
+  - [x] Automatische Dividenden-Ausschüttung aufs Privatkonto (Schalter & %-Slider, 5-Tage-Fixkostenpuffer geschützt) plus 1-Tap-Sofort-Ausschüttung
+  - [x] Minimalistischer Makro-Ticker (Head-Bar) mit interaktivem Drawer-Sheet (`MacroDrawer.tsx`)
+  - [x] Next-Rival Prestige Gauge über der Rich-List
+- [ ] **Nächster Schritt:** Weiterer Ausbau der Holding- & Konzernmechaniken (Gesellschafterdarlehen mit Zinsen, Holding-Cash-Pooling)

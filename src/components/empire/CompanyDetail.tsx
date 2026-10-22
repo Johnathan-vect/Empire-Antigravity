@@ -334,6 +334,20 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
         </div>
       ) : null}
 
+      {/* Streik-Stillstand-Banner */}
+      {c.strikeActiveUntil && c.strikeActiveUntil > s.gameMinutes ? (
+        <div className="rounded-xl bg-loss/15 border-l-4 border-loss p-4 shadow-[var(--shadow-border)] text-loss space-y-1 animate-pulse">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="size-4 shrink-0" />
+            <p className="font-semibold text-sm">Streik aktiv · Vollständiger Betriebsstillstand</p>
+          </div>
+          <p className="text-xs text-loss/90">
+            Die Belegschaft befindet sich im Ausstand. Kunden werden nicht bedient (0 € Umsatz) für noch ca.{" "}
+            <b>{Math.max(1, Math.round((c.strikeActiveUntil - s.gameMinutes) / 60))} Stunden</b>. Miete und Fixkosten fallen weiter an.
+          </p>
+        </div>
+      ) : null}
+
       {/* Sticky Sub-Navigation Tabs */}
       <div className="sticky -top-4 z-10 -mx-1 bg-bg/95 px-1 py-1.5 backdrop-blur-sm">
         <div className="grid grid-cols-4 rounded-xl bg-raised p-1 text-[11px] sm:text-sm shadow-[var(--shadow-border)]">
@@ -3346,6 +3360,74 @@ export function CompanyDetail({ companyId }: { companyId: string }) {
                 }}
               >
                 Entnehmen
+              </Button>
+            </div>
+          </div>
+
+          {/* Dividenden & Ausschüttungs-Politik */}
+          <div className="rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-xs uppercase tracking-wider text-muted block">
+                  Dividenden-Ausschüttung
+                </span>
+                <p className="font-medium text-fg text-sm mt-0.5">
+                  Tägliche Gewinne automatisch ans Privatkonto überweisen
+                </p>
+              </div>
+              <Switch
+                checked={Boolean(c.autoDividend)}
+                onCheckedChange={() => s.toggleAutoDividend(c.id)}
+              />
+            </div>
+
+            {c.autoDividend ? (
+              <div className="space-y-2 pt-2 border-t border-border/60">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted">Ausschüttungsquote</span>
+                  <span className="tabular font-medium text-fg">
+                    {c.dividendPct ?? 70} % des Tagesgewinns
+                  </span>
+                </div>
+                <Slider
+                  value={[c.dividendPct ?? 70]}
+                  min={10}
+                  max={100}
+                  step={5}
+                  onValueChange={(val) => s.setDividendPct(c.id, val[0])}
+                />
+                <p className="text-[11px] text-muted">
+                  Ein 5-Tage-Fixkostenpuffer (
+                  {money(
+                    ((c.rentPerDay || 20) +
+                      (c.employees?.reduce((sum, e) => sum + e.wage, 0) || 0) +
+                      40) *
+                      5 +
+                      300,
+                  )}
+                  ) verbleibt stets geschützt im Betrieb.
+                </p>
+              </div>
+            ) : (
+              <p className="text-xs text-muted">
+                Gewinne verbleiben voll in der Firmenkasse. Aktiviere diesen Schalter, um tägliche Reingewinne automatisch abzuschöpfen.
+              </p>
+            )}
+
+            <div className="pt-2">
+              <Button
+                variant="secondary"
+                className="w-full h-8 text-xs gap-1.5"
+                onClick={() => {
+                  const err = s.withdrawCompanyDividend(c.id);
+                  if (err) toast.error(err);
+                  else
+                    toast.success(
+                      `Freier Gewinn aus ${c.name} erfolgreich aufs Privatkonto übertragen.`,
+                    );
+                }}
+              >
+                <span>Freien Gewinn sofort ausschütten (1-Tap)</span>
               </Button>
             </div>
           </div>
